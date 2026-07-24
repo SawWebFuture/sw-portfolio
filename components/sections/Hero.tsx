@@ -26,7 +26,7 @@ export function Hero() {
             <span className="mt-1 block text-white/90">{hero.titleLines[1]}</span>
           </h1>
 
-          <div className="animate-fade-up-delay-2 relative my-7 h-64 overflow-hidden rounded-[2rem] border border-white/10 bg-white/10 shadow-[0_24px_80px_rgba(0,0,0,0.22)] backdrop-blur-sm lg:hidden">
+          <div className="animate-fade-up-delay-2 relative my-7 h-72 overflow-hidden rounded-[2rem] border border-white/10 bg-white/10 shadow-[0_24px_80px_rgba(0,0,0,0.22)] backdrop-blur-sm sm:h-80 lg:hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(255,129,57,0.2),transparent_55%)]" />
             <AgenticHeroScene className="opacity-90" />
           </div>

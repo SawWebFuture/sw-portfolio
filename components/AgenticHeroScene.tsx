@@ -24,6 +24,10 @@ export function AgenticHeroScene({ className = "" }: AgenticHeroSceneProps) {
     renderer.setClearColor(0x000000, 0);
     mount.appendChild(renderer.domElement);
 
+    renderer.domElement.style.display = "block";
+    renderer.domElement.style.height = "100%";
+    renderer.domElement.style.width = "100%";
+
     const group = new THREE.Group();
     scene.add(group);
 
@@ -91,8 +95,13 @@ export function AgenticHeroScene({ className = "" }: AgenticHeroSceneProps) {
     const resize = () => {
       const width = mount.clientWidth || 480;
       const height = mount.clientHeight || 520;
+      const isCompactHero = width < 640;
+
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
+      camera.position.z = isCompactHero ? 4.6 : 5.65;
+      camera.position.y = isCompactHero ? 0.08 : 0.2;
+      group.scale.setScalar(isCompactHero ? 1.26 : 1.08);
       camera.updateProjectionMatrix();
     };
 
