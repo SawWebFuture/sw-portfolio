@@ -2,14 +2,55 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { navLinks, site } from "@/data/site";
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const lastScrollY = useRef(0);
+  const ticking = useRef(false);
+
+  useEffect(() => {
+    lastScrollY.current = window.scrollY;
+
+    const updateHeader = () => {
+      const currentScrollY = window.scrollY;
+      const scrollDelta = currentScrollY - lastScrollY.current;
+
+      if (currentScrollY < 24 || scrollDelta < -6) {
+        setVisible(true);
+      } else if (scrollDelta > 6 && currentScrollY > 96) {
+        setVisible(false);
+        setOpen(false);
+      }
+
+      lastScrollY.current = currentScrollY;
+      ticking.current = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking.current) {
+        window.requestAnimationFrame(updateHeader);
+        ticking.current = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const headerVisible = visible || open;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/70 bg-surface/95 backdrop-blur-md">
+    <header
+      className={`sticky top-0 z-50 border-b border-border/70 bg-surface/90 shadow-[0_18px_60px_rgba(20,29,56,0.08)] backdrop-blur-xl transition-[transform,opacity,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+        headerVisible
+          ? "translate-y-0 opacity-100"
+          : "pointer-events-none -translate-y-full opacity-0 shadow-none"
+      }`}
+    >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
         <Link href="#hero" className="relative block h-10 w-40 shrink-0 sm:h-11 sm:w-44">
           <Image
