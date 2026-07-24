@@ -15,16 +15,17 @@ export const hero = {
 
 export const about = {
   eyebrow: "About Me",
-  title: "Crafting Clean Code & Intuitive Experiences",
+  title: "AI Systems That Turn Complexity Into Quality",
   paragraphs: [
-    "I'm Scott Williams, a Senior Software Engineer specializing in mobile and web development. I build elegant, high-performance apps using Flutter, SwiftUI, and React—focused on scalability, clean architecture, and great user experience.",
-    "With over a decade of experience, I've worked on everything from fintech platforms to wellness apps. Whether launching greenfield projects or mentoring engineering teams, I bring clarity, speed, and creative problem-solving to every line of code.",
+    "I'm Scott Williams, a product-driven Systems Architect and Tech Lead focused on autonomous multi-agent AI swarms, secure local-first AI workflows, and modernization paths that keep products moving while infrastructure evolves.",
+    "I partner with engineering organizations, funded startups, and leadership teams to connect agentic AI systems to real business outcomes: faster delivery, resilient architecture, better privacy, and durable product quality.",
   ],
   checklist: [
-    "Mobile Apps (Flutter, Swift, Kotlin, React Native)",
-    "Scalable Web Interfaces (React, NextJS, Vue)",
-    "API Integration & Backend (Firebase, Hasura, NodeJS)",
+    "Agentic AI orchestration with OpenClaw, OpenHands, Hermes, Qwen, and Llama",
+    "Local-first architecture for private workflows, edge devices, and secure data paths",
+    "Zero-downtime modernization using strangler fig migrations across web, mobile, and cloud",
   ],
+  outcomes: ["Autonomy", "Business Fit", "Quality"],
   images: [
     { src: "/images/about/about_2_1.jpg", alt: "Scott Williams Portfolio" },
     { src: "/images/about/about_2_2.jpg", alt: "Mobile Development" },

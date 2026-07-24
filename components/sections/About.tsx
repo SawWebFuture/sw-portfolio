@@ -1,63 +1,61 @@
-import Image from "next/image";
+import { AboutAiSystemScene } from "@/components/AboutAiSystemScene";
 import { about } from "@/data/about";
 import { site } from "@/data/site";
 
 export function About() {
   return (
-    <section id="about-sec" className="scroll-mt-24 bg-surface py-16 sm:py-20 lg:py-24">
-      <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
-        <div className="relative mx-auto w-full max-w-lg">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="relative col-span-2 aspect-[16/10] overflow-hidden rounded-lg">
-              <Image
-                src={about.images[0].src}
-                alt={about.images[0].alt}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 90vw, 40vw"
-              />
+    <section
+      id="about-sec"
+      className="scroll-mt-24 overflow-hidden bg-[linear-gradient(180deg,#ffffff_0%,#eef3f4_100%)] py-14 sm:py-18 lg:py-24"
+    >
+      <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
+        <div className="order-1 lg:order-none">
+          <div className="relative mx-auto h-[22rem] w-full max-w-md overflow-hidden rounded-[2rem] border border-border/80 bg-[radial-gradient(circle_at_35%_18%,rgba(255,129,57,0.18),transparent_38%),linear-gradient(145deg,#0b5a6b_0%,#102f3a_58%,#141d38_100%)] shadow-[0_28px_90px_rgba(20,29,56,0.22)] sm:h-[26rem] lg:max-w-lg">
+            <div className="absolute inset-x-6 top-5 z-10 flex items-center justify-between rounded-full border border-white/10 bg-white/10 px-4 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-white/70 backdrop-blur-md">
+              <span>AI System</span>
+              <span className="text-accent">Quality Output</span>
             </div>
-            <div className="relative aspect-square overflow-hidden rounded-lg">
-              <Image
-                src={about.images[1].src}
-                alt={about.images[1].alt}
-                fill
-                className="object-cover"
-                sizes="20vw"
-              />
-            </div>
-            <div className="relative aspect-square overflow-hidden rounded-lg">
-              <Image
-                src={about.images[2].src}
-                alt={about.images[2].alt}
-                fill
-                className="object-cover"
-                sizes="20vw"
-              />
+            <AboutAiSystemScene className="opacity-95" />
+            <div className="absolute inset-x-5 bottom-5 z-10 grid grid-cols-3 gap-2">
+              {about.outcomes.map((outcome) => (
+                <div
+                  key={outcome}
+                  className="rounded-2xl border border-white/10 bg-white/10 px-3 py-2 text-center text-xs font-semibold text-white/85 backdrop-blur-md"
+                >
+                  {outcome}
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-theme">
+        <div className="order-2 lg:order-none">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-theme sm:text-sm">
             {about.eyebrow}
           </p>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             {about.title}
           </h2>
-          {about.paragraphs.map((paragraph) => (
-            <p key={paragraph.slice(0, 24)} className="mt-4 text-base leading-relaxed text-muted">
-              {paragraph}
-            </p>
-          ))}
-          <ul className="mt-6 space-y-3">
+          <div className="mt-5 space-y-4">
+            {about.paragraphs.map((paragraph) => (
+              <p key={paragraph.slice(0, 24)} className="text-base leading-relaxed text-muted sm:text-lg">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+
+          <ul className="mt-7 grid gap-3">
             {about.checklist.map((item) => (
-              <li key={item} className="flex items-start gap-3 text-sm text-foreground sm:text-base">
-                <span className="mt-1 inline-block h-2.5 w-2.5 shrink-0 rounded-sm bg-theme" />
+              <li
+                key={item}
+                className="flex items-start gap-3 rounded-2xl border border-border/80 bg-surface px-4 py-3 text-sm leading-relaxed text-foreground shadow-sm sm:text-base"
+              >
+                <span className="mt-1.5 inline-block h-2.5 w-2.5 shrink-0 rounded-full bg-accent shadow-[0_0_0_5px_rgba(255,129,57,0.14)]" />
                 {item}
               </li>
             ))}
           </ul>
+
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href={site.linkedin}
@@ -65,15 +63,15 @@ export function About() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-md bg-theme px-5 py-3 text-sm font-semibold text-white transition hover:bg-theme-dark"
             >
-              LinkedIn →
+              Let’s Talk Shop →
             </a>
             <a
               href={site.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-md border border-border px-5 py-3 text-sm font-semibold text-foreground transition hover:border-theme hover:text-theme"
+              className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-5 py-3 text-sm font-semibold text-foreground transition hover:border-theme hover:text-theme"
             >
-              GitHub →
+              View Systems Work →
             </a>
           </div>
         </div>
