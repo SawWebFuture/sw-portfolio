@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { AgenticHeroScene } from "@/components/AgenticHeroScene";
 import { hero } from "@/data/about";
 import { site, socialLinks } from "@/data/site";
 
@@ -9,16 +10,10 @@ export function Hero() {
       className="relative overflow-hidden bg-[linear-gradient(135deg,#0b5a6b_0%,#0a3f4b_48%,#16303a_100%)] text-white"
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_30%,rgba(255,129,57,0.22),transparent_42%)]" />
-      <div className="absolute inset-y-0 right-0 hidden w-[48%] lg:block">
+      <div className="absolute inset-y-0 right-0 hidden w-[50%] lg:block">
         <div className="relative h-full w-full">
-          <Image
-            src={hero.image}
-            alt="Scott Williams app development"
-            fill
-            priority
-            className="object-contain object-right-bottom opacity-95"
-            sizes="48vw"
-          />
+          <div className="absolute inset-8 rounded-full bg-accent/10 blur-3xl" />
+          <AgenticHeroScene />
         </div>
       </div>
 
