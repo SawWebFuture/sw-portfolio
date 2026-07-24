@@ -1,10 +1,16 @@
 export const hero = {
-  subtitle: "Senior Software Engineer – Mobile & Web",
-  titleLines: ["Scott Williams", "App Development"],
-  text: "I build high-performance mobile and web applications using Flutter, SwiftUI, React, and modern backend technologies. From fintech to healthcare, I deliver scalable, user-focused digital solutions with clean architecture, intuitive UX, and cross-platform excellence.",
+  subtitle: "Product-Driven Systems Architect & Tech Lead",
+  titleLines: ["Agentic Engineering", "Local-First AI Systems"],
+  text: "I architect autonomous multi-agent AI swarms, secure local-first workflows, and zero-downtime modernization paths for complex legacy systems. I bridge cutting-edge AI orchestration with high-performance local hardware so teams can ship resilient products without compromising privacy, performance, or longevity.",
   image: "/images/hero/hero_img_3_1.png",
-  courseLabel: "Watch My Flutter Course",
-  coursePart: "Part 1",
+  primaryCta: "Let’s Talk Shop",
+  secondaryCta: "Explore Systems Work",
+  highlights: [
+    "Autonomous multi-agent swarms",
+    "Local LLM orchestration with Qwen & Llama",
+    "Strangler fig legacy modernization",
+    "Secure edge AI and private workflows",
+  ],
 } as const;
 
 export const about = {

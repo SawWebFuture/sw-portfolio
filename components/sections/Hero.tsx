@@ -31,31 +31,37 @@ export function Hero() {
             <span className="block">{hero.titleLines[0]}</span>
             <span className="mt-1 block text-white/90">{hero.titleLines[1]}</span>
           </h1>
-          <p className="animate-fade-up-delay-2 mt-6 text-base leading-relaxed text-white/80 sm:text-lg">
+          <p className="animate-fade-up-delay-2 mt-6 max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg">
             {hero.text}
           </p>
 
+          <div className="animate-fade-up-delay-2 mt-6 grid gap-3 sm:grid-cols-2">
+            {hero.highlights.map((highlight) => (
+              <div
+                key={highlight}
+                className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm font-medium text-white/85 shadow-[0_16px_40px_rgba(0,0,0,0.12)] backdrop-blur-sm"
+              >
+                {highlight}
+              </div>
+            ))}
+          </div>
+
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <a
-              href="#about-sec"
+              href={site.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90"
             >
-              About Me
+              {hero.primaryCta}
               <span aria-hidden>→</span>
             </a>
             <a
-              href={site.flutterCourse}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 rounded-md border border-white/25 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-white/10"
+              href="#service-sec"
+              className="inline-flex items-center gap-2 rounded-md border border-white/25 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
             >
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-accent">
-                ▶
-              </span>
-              <span className="text-left">
-                <span className="block font-semibold">{hero.courseLabel}</span>
-                <span className="block text-xs text-white/70">{hero.coursePart}</span>
-              </span>
+              {hero.secondaryCta}
+              <span aria-hidden>↓</span>
             </a>
           </div>
 
