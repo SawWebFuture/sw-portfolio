@@ -1,8 +1,13 @@
-import { AboutAiSystemScene } from "@/components/AboutAiSystemScene";
+"use client";
+
+import { useState } from "react";
+import { AboutAiSystemScene, type AboutAnimationMode } from "@/components/AboutAiSystemScene";
 import { about } from "@/data/about";
 import { site } from "@/data/site";
 
 export function About() {
+  const [animationMode, setAnimationMode] = useState<AboutAnimationMode>("Autonomy");
+
   return (
     <section
       id="about-sec"
@@ -15,16 +20,27 @@ export function About() {
               <span>AI System</span>
               <span className="text-accent">Quality Output</span>
             </div>
-            <AboutAiSystemScene className="opacity-95" />
+            <AboutAiSystemScene className="opacity-95" mode={animationMode} />
             <div className="absolute inset-x-5 bottom-5 z-10 grid grid-cols-3 gap-2">
-              {about.outcomes.map((outcome) => (
-                <div
-                  key={outcome}
-                  className="rounded-2xl border border-white/10 bg-white/10 px-3 py-2 text-center text-xs font-semibold text-white/85 backdrop-blur-md"
-                >
-                  {outcome}
-                </div>
-              ))}
+              {about.outcomes.map((outcome) => {
+                const active = animationMode === outcome;
+
+                return (
+                  <button
+                    key={outcome}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => setAnimationMode(outcome)}
+                    className={`rounded-2xl border px-3 py-2 text-center text-xs font-semibold backdrop-blur-md transition ${
+                      active
+                        ? "border-accent/70 bg-accent text-white shadow-[0_0_26px_rgba(255,129,57,0.42)]"
+                        : "border-white/10 bg-white/10 text-white/85 hover:border-white/25 hover:bg-white/15"
+                    }`}
+                  >
+                    {outcome}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>

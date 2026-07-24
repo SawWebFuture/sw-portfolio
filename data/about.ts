@@ -25,7 +25,7 @@ export const about = {
     "Local-first architecture for private workflows, edge devices, and secure data paths",
     "Zero-downtime modernization using strangler fig migrations across web, mobile, and cloud",
   ],
-  outcomes: ["Autonomy", "Business Fit", "Quality"],
+  outcomes: ["Autonomy", "Business Fit", "Quality"] as const,
   images: [
     { src: "/images/about/about_2_1.jpg", alt: "Scott Williams Portfolio" },
     { src: "/images/about/about_2_2.jpg", alt: "Mobile Development" },

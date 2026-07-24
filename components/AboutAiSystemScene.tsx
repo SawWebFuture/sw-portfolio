@@ -3,8 +3,11 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
+export type AboutAnimationMode = "Autonomy" | "Business Fit" | "Quality";
+
 type AboutAiSystemSceneProps = {
   className?: string;
+  mode?: AboutAnimationMode;
 };
 
 const CONNECTIONS = [
@@ -15,7 +18,7 @@ const CONNECTIONS = [
   [-0.25, 0.08, 0, 1.55, -0.58, 0],
 ] as const;
 
-export function AboutAiSystemScene({ className = "" }: AboutAiSystemSceneProps) {
+export function AboutAiSystemScene({ className = "", mode = "Autonomy" }: AboutAiSystemSceneProps) {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -23,6 +26,11 @@ export function AboutAiSystemScene({ className = "" }: AboutAiSystemSceneProps) 
     if (!mount) return;
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const modeSettings = {
+      Autonomy: { pulseSpeed: 0.48, coreSpeed: 0.58, businessPulse: 0.03, qualityPulse: 0.06 },
+      "Business Fit": { pulseSpeed: 0.3, coreSpeed: 0.28, businessPulse: 0.16, qualityPulse: 0.08 },
+      Quality: { pulseSpeed: 0.38, coreSpeed: 0.34, businessPulse: 0.05, qualityPulse: 0.22 },
+    }[mode];
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
     camera.position.set(0, 0.05, 6.5);
@@ -159,15 +167,18 @@ export function AboutAiSystemScene({ className = "" }: AboutAiSystemSceneProps) 
     const animate = () => {
       const elapsed = clock.getElapsedTime();
       root.position.y = Math.sin(elapsed * 0.65) * 0.05;
-      core.rotation.x = elapsed * 0.24;
-      core.rotation.y = elapsed * 0.36;
-      aiCore.rotation.z = Math.sin(elapsed * 0.7) * 0.04;
-      business.rotation.y = Math.sin(elapsed * 0.55) * 0.08;
-      quality.rotation.y = elapsed * 0.38;
-      quality.rotation.z = Math.sin(elapsed * 0.58) * 0.1;
+      core.rotation.x = elapsed * modeSettings.coreSpeed * 0.7;
+      core.rotation.y = elapsed * modeSettings.coreSpeed;
+      aiCore.rotation.z = Math.sin(elapsed * 0.7) * (mode === "Autonomy" ? 0.1 : 0.04);
+      const businessScale = 1 + Math.sin(elapsed * 1.4) * modeSettings.businessPulse;
+      business.scale.setScalar(businessScale);
+      quality.rotation.y = elapsed * (mode === "Quality" ? 0.7 : 0.38);
+      quality.rotation.z = Math.sin(elapsed * 0.58) * (0.1 + modeSettings.qualityPulse);
+      const qualityScale = 1 + Math.sin(elapsed * 1.8) * modeSettings.qualityPulse;
+      quality.scale.setScalar(qualityScale);
 
       CONNECTIONS.forEach(([x1, y1, z1, x2, y2, z2], index) => {
-        const progress = (elapsed * 0.34 + index * 0.17) % 1;
+        const progress = (elapsed * modeSettings.pulseSpeed + index * 0.17) % 1;
         pulses[index].position.set(
           THREE.MathUtils.lerp(x1, x2, progress),
           THREE.MathUtils.lerp(y1, y2, progress),
@@ -206,7 +217,7 @@ export function AboutAiSystemScene({ className = "" }: AboutAiSystemSceneProps) 
       pulseMaterial.dispose();
       renderer.dispose();
     };
-  }, []);
+  }, [mode]);
 
   return (
     <div
