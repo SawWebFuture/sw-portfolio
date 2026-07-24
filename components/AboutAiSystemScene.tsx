@@ -18,6 +18,13 @@ const CONNECTIONS = [
   [-0.25, 0.08, 0, 1.55, -0.58, 0],
 ] as const;
 
+const NATURE_STILLS = [
+  { path: "/images/poly-pizza/nature-megakit/tree.webp", position: [-2.2, -1.05, -0.32], scale: [0.92, 0.62, 1] },
+  { path: "/images/poly-pizza/nature-megakit/bush-flowers.webp", position: [-2.02, 1.04, -0.38], scale: [0.86, 0.58, 1] },
+  { path: "/images/poly-pizza/nature-megakit/fern.webp", position: [0.55, -1.22, -0.42], scale: [0.82, 0.56, 1] },
+  { path: "/images/poly-pizza/nature-megakit/clover.webp", position: [2.16, 1.0, -0.36], scale: [0.78, 0.52, 1] },
+] as const;
+
 export function AboutAiSystemScene({ className = "", mode = "Autonomy" }: AboutAiSystemSceneProps) {
   const mountRef = useRef<HTMLDivElement>(null);
 
@@ -119,6 +126,53 @@ export function AboutAiSystemScene({ className = "", mode = "Autonomy" }: AboutA
     });
     root.add(quality);
 
+    const textureLoader = new THREE.TextureLoader();
+    const stillGeometry = new THREE.PlaneGeometry(1, 0.68);
+    const stillCards = NATURE_STILLS.map((still, index) => {
+      const texture = textureLoader.load(still.path);
+      texture.colorSpace = THREE.SRGBColorSpace;
+      const material = new THREE.MeshBasicMaterial({
+        map: texture,
+        transparent: true,
+        opacity: 0.72,
+        side: THREE.DoubleSide,
+      });
+      const card = new THREE.Mesh(stillGeometry, material);
+      card.position.set(still.position[0], still.position[1], still.position[2]);
+      card.userData.baseY = still.position[1];
+      card.scale.set(still.scale[0], still.scale[1], still.scale[2]);
+      card.rotation.z = index % 2 === 0 ? -0.08 : 0.08;
+      root.add(card);
+      return { card, material, texture };
+    });
+
+    const mathGroup = new THREE.Group();
+    const mathMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.28 });
+    const circlePoints = new THREE.EllipseCurve(0, 0, 0.62, 0.62, 0, Math.PI * 2)
+      .getPoints(72)
+      .map((point) => new THREE.Vector3(point.x, point.y, 0));
+    const circle = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(circlePoints), mathMaterial);
+    circle.position.set(0.78, 0.82, -0.18);
+    const triangle = new THREE.LineLoop(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(-0.56, -0.32, 0),
+        new THREE.Vector3(0.56, -0.32, 0),
+        new THREE.Vector3(0, 0.58, 0),
+      ]),
+      mathMaterial,
+    );
+    triangle.position.set(-0.78, 0.9, -0.16);
+    mathGroup.add(circle, triangle);
+    root.add(mathGroup);
+
+    const formulaMaterial = new THREE.LineBasicMaterial({ color: 0xffb36b, transparent: true, opacity: 0.42 });
+    const wavePoints = Array.from({ length: 80 }, (_, index) => {
+      const x = -1.05 + index * 0.027;
+      return new THREE.Vector3(x, Math.sin(index * 0.28) * 0.08 - 0.96, -0.1);
+    });
+    const waveLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints(wavePoints), formulaMaterial);
+    root.add(waveLine);
+
     const lineMaterial = new THREE.LineBasicMaterial({ color: 0x8ee8f8, transparent: true, opacity: 0.44 });
     const lines = CONNECTIONS.map(([x1, y1, z1, x2, y2, z2]) => {
       const geometry = new THREE.BufferGeometry().setFromPoints([
@@ -176,6 +230,12 @@ export function AboutAiSystemScene({ className = "", mode = "Autonomy" }: AboutA
       quality.rotation.z = Math.sin(elapsed * 0.58) * (0.1 + modeSettings.qualityPulse);
       const qualityScale = 1 + Math.sin(elapsed * 1.8) * modeSettings.qualityPulse;
       quality.scale.setScalar(qualityScale);
+      stillCards.forEach(({ card }, index) => {
+        card.position.y = card.userData.baseY + Math.sin(elapsed * 0.85 + index) * 0.045;
+        card.rotation.y = Math.sin(elapsed * 0.42 + index) * 0.08;
+      });
+      mathGroup.rotation.z = elapsed * (mode === "Quality" ? 0.18 : 0.08);
+      waveLine.rotation.z = Math.sin(elapsed * 0.55) * 0.04;
 
       CONNECTIONS.forEach(([x1, y1, z1, x2, y2, z2], index) => {
         const progress = (elapsed * modeSettings.pulseSpeed + index * 0.17) % 1;
@@ -211,6 +271,16 @@ export function AboutAiSystemScene({ className = "", mode = "Autonomy" }: AboutA
       diamond.geometry.dispose();
       sparkleGeometry.dispose();
       qualityMaterial.dispose();
+      stillGeometry.dispose();
+      stillCards.forEach(({ material, texture }) => {
+        texture.dispose();
+        material.dispose();
+      });
+      circle.geometry.dispose();
+      triangle.geometry.dispose();
+      mathMaterial.dispose();
+      waveLine.geometry.dispose();
+      formulaMaterial.dispose();
       lines.forEach((line) => line.geometry.dispose());
       lineMaterial.dispose();
       pulseGeometry.dispose();
