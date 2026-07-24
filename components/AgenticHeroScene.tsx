@@ -3,7 +3,11 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-export function AgenticHeroScene() {
+type AgenticHeroSceneProps = {
+  className?: string;
+};
+
+export function AgenticHeroScene({ className = "" }: AgenticHeroSceneProps) {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -140,7 +144,7 @@ export function AgenticHeroScene() {
     <div
       ref={mountRef}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 z-0 opacity-95"
+      className={`pointer-events-none absolute inset-0 z-0 opacity-95 ${className}`}
     />
   );
 }

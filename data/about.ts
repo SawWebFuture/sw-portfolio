@@ -1,15 +1,15 @@
 export const hero = {
-  subtitle: "Product-Driven Systems Architect & Tech Lead",
+  subtitle: "Systems Architect · Agentic AI Lead",
   titleLines: ["Agentic Engineering", "Local-First AI Systems"],
-  text: "I architect autonomous multi-agent AI swarms, secure local-first workflows, and zero-downtime modernization paths for complex legacy systems. I bridge cutting-edge AI orchestration with high-performance local hardware so teams can ship resilient products without compromising privacy, performance, or longevity.",
+  text: "I design local-first AI systems, autonomous agent swarms, and zero-downtime modernization paths for teams moving from legacy complexity to durable, privacy-first products.",
   image: "/images/hero/hero_img_3_1.png",
   primaryCta: "Let’s Talk Shop",
   secondaryCta: "Explore Systems Work",
   highlights: [
-    "Autonomous multi-agent swarms",
-    "Local LLM orchestration with Qwen & Llama",
-    "Strangler fig legacy modernization",
-    "Secure edge AI and private workflows",
+    "Multi-agent AI swarms",
+    "Local Qwen & Llama workflows",
+    "Zero-downtime modernization",
+    "Private edge AI systems",
   ],
 } as const;
 
