@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f7fafb;
+  --foreground: #141d38;
+  --muted: #737887;
+  --theme: #0b5a6b;
+  --theme-dark: #084854;
+  --accent: #ff8139;
+  --smoke: #eef3f4;
+  --surface: #ffffff;
+  --border: #d7e2e5;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-theme: var(--theme);
+  --color-theme-dark: var(--theme-dark);
+  --color-accent: var(--accent);
+  --color-smoke: var(--smoke);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-title);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-title), system-ui, sans-serif;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes grow-bar {
+  from {
+    width: 0%;
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s ease-out both;
+}
+
+.animate-fade-up-delay {
+  animation: fade-up 0.7s ease-out 0.15s both;
+}
+
+.animate-fade-up-delay-2 {
+  animation: fade-up 0.7s ease-out 0.3s both;
+}
+
+.skill-bar-fill {
+  animation: grow-bar 1.2s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-fade-up,
+  .animate-fade-up-delay,
+  .animate-fade-up-delay-2,
+  .skill-bar-fill {
+    animation: none;
+  }
+}
