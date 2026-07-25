@@ -17,10 +17,16 @@ export function About() {
         <div className="order-1 lg:order-none">
           <div className="relative mx-auto h-[22rem] w-full max-w-md overflow-hidden rounded-[2rem] border border-border/80 bg-[radial-gradient(circle_at_35%_18%,rgba(255,129,57,0.18),transparent_38%),linear-gradient(145deg,#0b5a6b_0%,#102f3a_58%,#141d38_100%)] shadow-[0_28px_90px_rgba(20,29,56,0.22)] sm:h-[26rem] lg:max-w-lg">
             <div className="absolute inset-x-6 top-5 z-10 flex items-center justify-between rounded-full border border-white/10 bg-white/10 px-4 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-white/70 backdrop-blur-md">
-              <span>AI System</span>
-              <span className="text-accent">Quality Output</span>
+              <span>Camera Array</span>
+              <span className="text-accent">AI + Nature</span>
             </div>
             <AboutAiSystemScene className="opacity-95" mode={animationMode} />
+            <div className="pointer-events-none absolute inset-0 z-[1] grid grid-cols-3 grid-rows-3">
+              {Array.from({ length: 9 }).map((_, index) => (
+                <div key={index} className="border border-white/8" />
+              ))}
+            </div>
+            <div className="pointer-events-none absolute inset-0 z-[2] bg-[radial-gradient(circle_at_center,transparent_45%,rgba(8,23,35,0.24)_100%)]" />
             <div className="absolute inset-x-5 bottom-5 z-10 grid grid-cols-3 gap-2">
               {about.outcomes.map((outcome) => {
                 const active = animationMode === outcome;

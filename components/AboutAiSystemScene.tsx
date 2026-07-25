@@ -19,10 +19,10 @@ const CONNECTIONS = [
 ] as const;
 
 const NATURE_STILLS = [
-  { path: "/images/poly-pizza/nature-megakit/tree.webp", position: [-2.2, -1.05, -0.32], scale: [0.92, 0.62, 1] },
-  { path: "/images/poly-pizza/nature-megakit/bush-flowers.webp", position: [-2.02, 1.04, -0.38], scale: [0.86, 0.58, 1] },
-  { path: "/images/poly-pizza/nature-megakit/fern.webp", position: [0.55, -1.22, -0.42], scale: [0.82, 0.56, 1] },
-  { path: "/images/poly-pizza/nature-megakit/clover.webp", position: [2.16, 1.0, -0.36], scale: [0.78, 0.52, 1] },
+  { path: "/images/poly-pizza/nature-megakit/tree.webp", position: [-1.08, -0.74, 0.08], scale: [0.74, 0.5, 1] },
+  { path: "/images/poly-pizza/nature-megakit/bush-flowers.webp", position: [-1.08, 0.78, 0.08], scale: [0.74, 0.5, 1] },
+  { path: "/images/poly-pizza/nature-megakit/fern.webp", position: [1.12, -0.74, 0.08], scale: [0.74, 0.5, 1] },
+  { path: "/images/poly-pizza/nature-megakit/clover.webp", position: [1.12, 0.78, 0.08], scale: [0.74, 0.5, 1] },
 ] as const;
 
 export function AboutAiSystemScene({ className = "", mode = "Autonomy" }: AboutAiSystemSceneProps) {
@@ -39,8 +39,24 @@ export function AboutAiSystemScene({ className = "", mode = "Autonomy" }: AboutA
       Quality: { pulseSpeed: 0.38, coreSpeed: 0.34, businessPulse: 0.05, qualityPulse: 0.22 },
     }[mode];
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
-    camera.position.set(0, 0.05, 6.5);
+    const cameraGrid = 3;
+    const subCameras: THREE.PerspectiveCamera[] = [];
+
+    for (let y = 0; y < cameraGrid; y += 1) {
+      for (let x = 0; x < cameraGrid; x += 1) {
+        const subCamera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+        subCamera.viewport = new THREE.Vector4();
+        subCamera.position.set(
+          ((x / (cameraGrid - 1)) - 0.5) * 1.35,
+          (0.5 - (y / (cameraGrid - 1))) * 0.95,
+          6.2,
+        );
+        subCamera.lookAt(0, 0, 0);
+        subCameras.push(subCamera);
+      }
+    }
+
+    const camera = new THREE.ArrayCamera(subCameras);
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
@@ -134,7 +150,7 @@ export function AboutAiSystemScene({ className = "", mode = "Autonomy" }: AboutA
       const material = new THREE.MeshBasicMaterial({
         map: texture,
         transparent: true,
-        opacity: 0.72,
+        opacity: 0.88,
         side: THREE.DoubleSide,
       });
       const card = new THREE.Mesh(stillGeometry, material);
@@ -205,10 +221,29 @@ export function AboutAiSystemScene({ className = "", mode = "Autonomy" }: AboutA
       const compact = width < 520;
 
       renderer.setSize(width, height, false);
-      camera.aspect = width / height;
-      camera.position.z = compact ? 5.35 : 5.1;
-      root.scale.setScalar(compact ? 1.08 : 1.14);
-      camera.updateProjectionMatrix();
+      const pixelRatio = renderer.getPixelRatio();
+      const drawingWidth = Math.floor(width * pixelRatio);
+      const drawingHeight = Math.floor(height * pixelRatio);
+      const tileWidth = Math.ceil(drawingWidth / cameraGrid);
+      const tileHeight = Math.ceil(drawingHeight / cameraGrid);
+
+      subCameras.forEach((subCamera, index) => {
+        const x = index % cameraGrid;
+        const y = Math.floor(index / cameraGrid);
+        subCamera.viewport?.set(
+          Math.floor(x * tileWidth),
+          Math.floor((cameraGrid - y - 1) * tileHeight),
+          tileWidth,
+          tileHeight,
+        );
+        subCamera.aspect = tileWidth / tileHeight;
+        subCamera.position.z = compact ? 5.45 : 5.85;
+        subCamera.lookAt(0, 0, 0);
+        subCamera.updateProjectionMatrix();
+        subCamera.updateMatrixWorld();
+      });
+
+      root.scale.setScalar(compact ? 1.16 : 1.22);
     };
 
     const resizeObserver = new ResizeObserver(resize);
