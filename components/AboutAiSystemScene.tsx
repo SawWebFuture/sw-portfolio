@@ -91,16 +91,13 @@ export function AboutAiSystemScene({ className = "", mode = "Autonomy" }: AboutA
       roughness: 0.2,
       clearcoat: 0.85,
     });
-    const businessMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0xffffff,
-      emissive: 0x0b5a6b,
-      emissiveIntensity: 0.18,
-      metalness: 0.12,
-      roughness: 0.32,
-      transparent: true,
-      opacity: 0.86,
-      clearcoat: 0.5,
-    });
+    const modeMaterials: THREE.Material[] = [];
+    const modeGeometries: THREE.BufferGeometry[] = [];
+    const modeTextures: THREE.Texture[] = [];
+    const flowerLines: THREE.LineLoop[] = [];
+    const waterLines: THREE.Line[] = [];
+    const treeParts: THREE.Object3D[] = [];
+    const textureLoader = new THREE.TextureLoader();
 
     const core = new THREE.Mesh(new THREE.IcosahedronGeometry(0.56, 2), coreMaterial);
     core.position.set(-1.46, 0, 0);
@@ -119,16 +116,102 @@ export function AboutAiSystemScene({ className = "", mode = "Autonomy" }: AboutA
       aiCore.add(node);
     });
 
-    const business = new THREE.Group();
-    const base = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.95, 0.34), businessMaterial);
-    base.position.set(-0.02, -0.23, 0);
-    const roof = new THREE.Mesh(new THREE.ConeGeometry(0.68, 0.46, 4), businessMaterial);
-    roof.position.set(-0.02, 0.49, 0);
-    roof.rotation.y = Math.PI / 4;
-    const door = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.44, 0.36), nodeMaterial);
-    door.position.set(-0.02, -0.48, 0.02);
-    business.add(base, roof, door);
-    root.add(business);
+    const modeObject = new THREE.Group();
+    modeObject.position.set(0, 0, 0.02);
+    root.add(modeObject);
+
+    if (mode === "Autonomy") {
+      const flowerMaterial = new THREE.LineBasicMaterial({ color: 0x8ee8f8, transparent: true, opacity: 0.86 });
+      const accentFlowerMaterial = new THREE.LineBasicMaterial({ color: 0xffb36b, transparent: true, opacity: 0.72 });
+      modeMaterials.push(flowerMaterial, accentFlowerMaterial);
+      const centers = [[0, 0], ...Array.from({ length: 6 }, (_, index) => {
+        const angle = (index / 6) * Math.PI * 2;
+        return [Math.cos(angle) * 0.36, Math.sin(angle) * 0.36];
+      })];
+
+      centers.forEach(([x, y], index) => {
+        const geometry = new THREE.BufferGeometry().setFromPoints(
+          new THREE.EllipseCurve(0, 0, 0.36, 0.36, 0, Math.PI * 2)
+            .getPoints(96)
+            .map((point) => new THREE.Vector3(point.x, point.y, 0)),
+        );
+        const loop = new THREE.LineLoop(geometry, index % 2 === 0 ? flowerMaterial : accentFlowerMaterial);
+        loop.position.set(x, y, 0.08);
+        flowerLines.push(loop);
+        modeGeometries.push(geometry);
+        modeObject.add(loop);
+      });
+
+      const seedGeometry = new THREE.IcosahedronGeometry(0.12, 1);
+      const seedMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.9 });
+      const seed = new THREE.Mesh(seedGeometry, seedMaterial);
+      modeGeometries.push(seedGeometry);
+      modeMaterials.push(seedMaterial);
+      modeObject.add(seed);
+    }
+
+    if (mode === "Business Fit") {
+      const waterMaterial = new THREE.LineBasicMaterial({ color: 0x8ee8f8, transparent: true, opacity: 0.82 });
+      const glowMaterial = new THREE.MeshBasicMaterial({ color: 0x13b8cf, transparent: true, opacity: 0.18, side: THREE.DoubleSide });
+      modeMaterials.push(waterMaterial, glowMaterial);
+
+      const poolGeometry = new THREE.PlaneGeometry(1.95, 0.95, 1, 1);
+      const pool = new THREE.Mesh(poolGeometry, glowMaterial);
+      pool.position.set(0.18, -0.06, -0.02);
+      modeGeometries.push(poolGeometry);
+      modeObject.add(pool);
+
+      Array.from({ length: 6 }).forEach((_, row) => {
+        const geometry = new THREE.BufferGeometry().setFromPoints(
+          Array.from({ length: 90 }, (_, index) => {
+            const x = -0.95 + index * 0.022;
+            const y = -0.38 + row * 0.15 + Math.sin(index * 0.24 + row) * 0.045;
+            return new THREE.Vector3(x, y, 0.12);
+          }),
+        );
+        const stream = new THREE.Line(geometry, waterMaterial);
+        stream.userData.baseY = -0.38 + row * 0.15;
+        stream.userData.phase = row * 0.75;
+        waterLines.push(stream);
+        modeGeometries.push(geometry);
+        modeObject.add(stream);
+      });
+    }
+
+    if (mode === "Quality") {
+      const trunkMaterial = new THREE.MeshPhysicalMaterial({ color: 0x8b5a2b, roughness: 0.58, clearcoat: 0.2 });
+      const leafMaterial = new THREE.MeshPhysicalMaterial({ color: 0x7fd66b, emissive: 0x0b5a6b, emissiveIntensity: 0.12, roughness: 0.34, clearcoat: 0.45 });
+      const treeTexture = textureLoader.load("/images/poly-pizza/nature-megakit/tree.webp");
+      treeTexture.colorSpace = THREE.SRGBColorSpace;
+      const treeTextureMaterial = new THREE.MeshBasicMaterial({ map: treeTexture, transparent: true, opacity: 0.96, side: THREE.DoubleSide });
+      modeMaterials.push(trunkMaterial, leafMaterial, treeTextureMaterial);
+      modeTextures.push(treeTexture);
+
+      const trunkGeometry = new THREE.CylinderGeometry(0.08, 0.14, 0.95, 10);
+      const trunk = new THREE.Mesh(trunkGeometry, trunkMaterial);
+      trunk.position.set(0, -0.36, 0.06);
+      treeParts.push(trunk);
+      modeGeometries.push(trunkGeometry);
+      modeObject.add(trunk);
+
+      const canopyPositions = [[0, 0.32, 0.04], [-0.28, 0.12, 0.03], [0.3, 0.14, 0.03], [0, 0.02, 0.12]];
+      canopyPositions.forEach(([x, y, z], index) => {
+        const geometry = new THREE.IcosahedronGeometry(index === 0 ? 0.42 : 0.32, 2);
+        const leaf = new THREE.Mesh(geometry, leafMaterial);
+        leaf.position.set(x, y, z);
+        treeParts.push(leaf);
+        modeGeometries.push(geometry);
+        modeObject.add(leaf);
+      });
+
+      const texturePlaneGeometry = new THREE.PlaneGeometry(1.05, 1.26);
+      const texturePlane = new THREE.Mesh(texturePlaneGeometry, treeTextureMaterial);
+      texturePlane.position.set(0.05, 0.1, 0.18);
+      texturePlane.scale.setScalar(0.82);
+      treeParts.push(texturePlane);
+      modeGeometries.push(texturePlaneGeometry);
+      modeObject.add(texturePlane);
+    }
 
     const quality = new THREE.Group();
     const diamond = new THREE.Mesh(new THREE.OctahedronGeometry(0.45, 1), qualityMaterial);
@@ -142,7 +225,6 @@ export function AboutAiSystemScene({ className = "", mode = "Autonomy" }: AboutA
     });
     root.add(quality);
 
-    const textureLoader = new THREE.TextureLoader();
     const stillGeometry = new THREE.PlaneGeometry(1, 0.68);
     const stillCards = NATURE_STILLS.map((still, index) => {
       const texture = textureLoader.load(still.path);
@@ -259,8 +341,18 @@ export function AboutAiSystemScene({ className = "", mode = "Autonomy" }: AboutA
       core.rotation.x = elapsed * modeSettings.coreSpeed * 0.7;
       core.rotation.y = elapsed * modeSettings.coreSpeed;
       aiCore.rotation.z = Math.sin(elapsed * 0.7) * (mode === "Autonomy" ? 0.1 : 0.04);
-      const businessScale = 1 + Math.sin(elapsed * 1.4) * modeSettings.businessPulse;
-      business.scale.setScalar(businessScale);
+      const modePulse = 1 + Math.sin(elapsed * 1.4) * modeSettings.businessPulse;
+      modeObject.scale.setScalar(modePulse);
+      flowerLines.forEach((line, index) => {
+        line.rotation.z = elapsed * (index % 2 === 0 ? 0.16 : -0.12);
+      });
+      waterLines.forEach((stream) => {
+        stream.position.x = Math.sin(elapsed * 1.8 + stream.userData.phase) * 0.18;
+        stream.position.y = Math.sin(elapsed * 2.2 + stream.userData.phase) * 0.025;
+      });
+      treeParts.forEach((part, index) => {
+        part.rotation.y = Math.sin(elapsed * 0.52 + index) * 0.08;
+      });
       quality.rotation.y = elapsed * (mode === "Quality" ? 0.7 : 0.38);
       quality.rotation.z = Math.sin(elapsed * 0.58) * (0.1 + modeSettings.qualityPulse);
       const qualityScale = 1 + Math.sin(elapsed * 1.8) * modeSettings.qualityPulse;
@@ -299,10 +391,9 @@ export function AboutAiSystemScene({ className = "", mode = "Autonomy" }: AboutA
       coreMaterial.dispose();
       smallNodeGeometry.dispose();
       nodeMaterial.dispose();
-      base.geometry.dispose();
-      roof.geometry.dispose();
-      door.geometry.dispose();
-      businessMaterial.dispose();
+      modeGeometries.forEach((geometry) => geometry.dispose());
+      modeMaterials.forEach((material) => material.dispose());
+      modeTextures.forEach((texture) => texture.dispose());
       diamond.geometry.dispose();
       sparkleGeometry.dispose();
       qualityMaterial.dispose();
