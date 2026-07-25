@@ -1,0 +1,37 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="800" fill="#F7FBFC"/>
+  <circle cx="250" cy="190" r="240" fill="#13B8CF" fill-opacity="0.16"/>
+  <circle cx="950" cy="640" r="300" fill="#FF8139" fill-opacity="0.12"/>
+  <circle cx="760" cy="250" r="220" fill="#0B5A6B" fill-opacity="0.10"/>
+  <g stroke="#0B5A6B" stroke-opacity="0.22" stroke-width="3">
+    <path d="M160 560C300 350 450 310 590 420C730 530 860 460 1040 250"/>
+    <path d="M180 255C360 430 560 470 760 380C900 318 990 342 1090 420"/>
+    <path d="M240 650C430 520 540 545 700 610C840 665 970 610 1070 500"/>
+  </g>
+  <g stroke="#FF8139" stroke-opacity="0.45" stroke-width="2">
+    <circle cx="285" cy="325" r="84"/>
+    <circle cx="285" cy="325" r="52"/>
+    <circle cx="285" cy="325" r="22" fill="#FF8139" fill-opacity="0.5"/>
+    <path d="M201 325H369M285 241V409M226 266L344 384M344 266L226 384"/>
+  </g>
+  <g stroke="#13B8CF" stroke-opacity="0.55" stroke-width="2">
+    <circle cx="845" cy="300" r="104"/>
+    <circle cx="845" cy="300" r="64"/>
+    <circle cx="845" cy="300" r="26" fill="#13B8CF" fill-opacity="0.42"/>
+    <path d="M741 300H949M845 196V404M772 227L918 373M918 227L772 373"/>
+  </g>
+  <g fill="#0B5A6B" fill-opacity="0.9">
+    <circle cx="160" cy="560" r="16"/>
+    <circle cx="590" cy="420" r="16"/>
+    <circle cx="1040" cy="250" r="16"/>
+    <circle cx="180" cy="255" r="12"/>
+    <circle cx="760" cy="380" r="12"/>
+    <circle cx="1090" cy="420" r="12"/>
+    <circle cx="240" cy="650" r="12"/>
+    <circle cx="700" cy="610" r="12"/>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#10223D">
+    <text x="90" y="105" font-size="42" font-weight="800" letter-spacing="3">AGENTIC ENGINEERING</text>
+    <text x="90" y="160" font-size="24" font-weight="700" fill="#0B5A6B" letter-spacing="4">LOCAL-FIRST AI · MULTI-AGENT SYSTEMS · EDGE LLMs</text>
+  </g>
+</svg>
