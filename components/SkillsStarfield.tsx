@@ -3,11 +3,13 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-type SkillsStarfieldProps = {
+type SkillsGeometryFieldProps = {
   className?: string;
 };
 
-export function SkillsStarfield({ className = "" }: SkillsStarfieldProps) {
+const SHAPE_COLORS = [0xff8139, 0x13b8cf, 0x0b5a6b, 0xffb36b] as const;
+
+export function SkillsGeometryField({ className = "" }: SkillsGeometryFieldProps) {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -17,7 +19,7 @@ export function SkillsStarfield({ className = "" }: SkillsStarfieldProps) {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
-    camera.position.z = 2;
+    camera.position.z = 3;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
@@ -27,45 +29,49 @@ export function SkillsStarfield({ className = "" }: SkillsStarfieldProps) {
     renderer.domElement.style.height = "100%";
     mount.appendChild(renderer.domElement);
 
-    const starCount = 130;
-    const starGeometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(starCount * 3);
-    const twinkles = new Float32Array(starCount);
+    const group = new THREE.Group();
+    scene.add(group);
 
-    for (let index = 0; index < starCount; index += 1) {
-      positions[index * 3] = Math.random() * 4 - 2;
-      positions[index * 3 + 1] = Math.random() * 2.6 - 1.3;
-      positions[index * 3 + 2] = Math.random() * 0.4;
-      twinkles[index] = Math.random() * Math.PI * 2;
-    }
+    const materials = SHAPE_COLORS.map(
+      (color) => new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.2, wireframe: true }),
+    );
+    const fillMaterials = SHAPE_COLORS.map(
+      (color) => new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.08, side: THREE.DoubleSide }),
+    );
 
-    starGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    const starMaterial = new THREE.PointsMaterial({
-      color: 0x0b5a6b,
-      size: 0.014,
-      transparent: true,
-      opacity: 0.34,
-      depthWrite: false,
+    const geometries = [
+      new THREE.TetrahedronGeometry(0.18, 0),
+      new THREE.OctahedronGeometry(0.2, 0),
+      new THREE.IcosahedronGeometry(0.18, 1),
+      new THREE.BoxGeometry(0.24, 0.24, 0.24),
+      new THREE.TorusGeometry(0.16, 0.028, 8, 28),
+    ];
+
+    const shapes = Array.from({ length: 18 }, (_, index) => {
+      const geometry = geometries[index % geometries.length];
+      const material = materials[index % materials.length];
+      const fillMaterial = fillMaterials[index % fillMaterials.length];
+      const shape = new THREE.Group();
+      const fill = new THREE.Mesh(geometry, fillMaterial);
+      const wire = new THREE.Mesh(geometry, material);
+      shape.add(fill, wire);
+      shape.userData.phase = index * 0.37;
+      shape.userData.speed = 0.08 + (index % 5) * 0.018;
+      shape.userData.depth = 0.85 + (index % 4) * 0.12;
+      group.add(shape);
+      return shape;
     });
-    const stars = new THREE.Points(starGeometry, starMaterial);
-    scene.add(stars);
 
-    const streakMaterial = new THREE.LineBasicMaterial({ color: 0xff8139, transparent: true, opacity: 0.56 });
-    const streaks = Array.from({ length: 7 }, (_, index) => {
-      const geometry = new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(0.38, 0.12, 0),
-      ]);
-      const line = new THREE.Line(geometry, streakMaterial);
-      line.userData.speed = 0.22 + index * 0.045;
-      line.userData.phase = index / 7;
-      scene.add(line);
-      return line;
-    });
+    const connectorMaterial = new THREE.LineBasicMaterial({ color: 0x0b5a6b, transparent: true, opacity: 0.12 });
+    const connectorGeometry = new THREE.BufferGeometry();
+    const connectorPositions = new Float32Array((shapes.length - 1) * 2 * 3);
+    connectorGeometry.setAttribute("position", new THREE.BufferAttribute(connectorPositions, 3));
+    const connectors = new THREE.LineSegments(connectorGeometry, connectorMaterial);
+    group.add(connectors);
 
     const resize = () => {
       const width = mount.clientWidth || 360;
-      const height = mount.clientHeight || 320;
+      const height = mount.clientHeight || 280;
       const aspect = width / height;
 
       camera.left = -aspect;
@@ -85,23 +91,36 @@ export function SkillsStarfield({ className = "" }: SkillsStarfieldProps) {
 
     const animate = () => {
       const elapsed = clock.getElapsedTime();
-      const positionAttribute = starGeometry.getAttribute("position") as THREE.BufferAttribute;
+      const left = camera.left - 0.35;
+      const right = camera.right + 0.35;
+      const width = right - left;
 
-      for (let index = 0; index < starCount; index += 1) {
-        const x = positionAttribute.getX(index) - 0.0008;
-        positionAttribute.setX(index, x < camera.left - 0.1 ? camera.right + 0.1 : x);
-      }
-      positionAttribute.needsUpdate = true;
-      starMaterial.opacity = 0.26 + Math.sin(elapsed * 0.8 + twinkles[0]) * 0.08;
+      shapes.forEach((shape, index) => {
+        const phase = shape.userData.phase;
+        const progress = (elapsed * shape.userData.speed + phase) % 1;
+        const lane = (index % 6) / 5;
+        const x = right - progress * width;
+        const y = THREE.MathUtils.lerp(0.76, -0.76, lane) + Math.sin(elapsed * 0.8 + phase) * 0.08;
 
-      streaks.forEach((streak) => {
-        const progress = (elapsed * streak.userData.speed + streak.userData.phase) % 1;
-        const x = THREE.MathUtils.lerp(camera.right + 0.5, camera.left - 0.7, progress);
-        const y = THREE.MathUtils.lerp(0.95, -0.75, progress) + Math.sin(progress * Math.PI * 2) * 0.12;
-        streak.position.set(x, y, 0.1);
-        streak.rotation.z = -0.32;
-        streak.scale.setScalar(0.72 + Math.sin(progress * Math.PI) * 0.55);
+        shape.position.set(x, y, Math.sin(elapsed * 0.5 + phase) * 0.12);
+        shape.rotation.x = elapsed * 0.32 + phase;
+        shape.rotation.y = elapsed * 0.42 + phase * 0.5;
+        shape.rotation.z = -0.26 + Math.sin(elapsed * 0.45 + phase) * 0.18;
+        shape.scale.setScalar(shape.userData.depth * (0.88 + Math.sin(elapsed + phase) * 0.08));
       });
+
+      for (let index = 0; index < shapes.length - 1; index += 1) {
+        const from = shapes[index].position;
+        const to = shapes[index + 1].position;
+        connectorPositions[index * 6] = from.x;
+        connectorPositions[index * 6 + 1] = from.y;
+        connectorPositions[index * 6 + 2] = from.z;
+        connectorPositions[index * 6 + 3] = to.x;
+        connectorPositions[index * 6 + 4] = to.y;
+        connectorPositions[index * 6 + 5] = to.z;
+      }
+      connectorGeometry.attributes.position.needsUpdate = true;
+      connectorMaterial.opacity = 0.08 + Math.sin(elapsed * 0.75) * 0.035;
 
       renderer.render(scene, camera);
 
@@ -116,10 +135,11 @@ export function SkillsStarfield({ className = "" }: SkillsStarfieldProps) {
       window.cancelAnimationFrame(frameId);
       resizeObserver.disconnect();
       mount.removeChild(renderer.domElement);
-      starGeometry.dispose();
-      starMaterial.dispose();
-      streaks.forEach((streak) => streak.geometry.dispose());
-      streakMaterial.dispose();
+      materials.forEach((material) => material.dispose());
+      fillMaterials.forEach((material) => material.dispose());
+      geometries.forEach((geometry) => geometry.dispose());
+      connectorGeometry.dispose();
+      connectorMaterial.dispose();
       renderer.dispose();
     };
   }, []);
