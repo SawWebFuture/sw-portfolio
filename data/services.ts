@@ -1,37 +1,25 @@
 export const services = {
   eyebrow: "What I Do",
-  title: "Custom Software Solutions for",
-  titleAccent: "Web & Mobile",
+  title: "Agentic Systems for",
+  titleAccent: "Real Business Outcomes",
+  intro:
+    "I help teams turn scattered technical pieces into one durable system — from strategy and architecture through implementation, rollout, and modernization.",
   items: [
     {
-      title: "Flutter App Development",
-      text: "Build fast, beautiful, and scalable cross-platform apps with Flutter for both iOS and Android.",
-      image: "/images/service/service_box_1.jpg",
-      icon: "/images/icon/service_box_1.svg",
+      title: "AI Systems Architecture",
+      text: "Design autonomous multi-agent workflows, local LLM pipelines, vector systems, and orchestration layers that can safely move from prototype to production.",
     },
     {
-      title: "iOS & Android Native",
-      text: "Custom native mobile applications using Swift/SwiftUI and Kotlin, built for performance and quality.",
-      image: "/images/service/service_box_2.jpg",
-      icon: "/images/icon/service_box_2.svg",
+      title: "Legacy Modernization",
+      text: "Untangle complex platforms with zero-downtime migration paths, strangler fig patterns, observability, and pragmatic delivery plans.",
     },
     {
-      title: "Web Development",
-      text: "Responsive, modern websites and apps built with React, Next.js, Vue, and HTML/CSS/JS.",
-      image: "/images/service/service_box_3.jpg",
-      icon: "/images/icon/service_box_3.svg",
+      title: "Local-First AI Workflows",
+      text: "Build private, edge-aware AI workflows optimized for Qwen, Llama, secure data paths, and high-performance local hardware.",
     },
     {
-      title: "API & Backend Integration",
-      text: "Robust backend development using Firebase, NodeJS, Hasura, C#, and GraphQL for scalable systems.",
-      image: "/images/service/service_box_4.jpg",
-      icon: "/images/icon/service_box_4.svg",
-    },
-    {
-      title: "UI/UX & Graphic Design",
-      text: "Designing intuitive user interfaces and experiences that merge aesthetics with functionality.",
-      image: "/images/service/service_box_5.jpg",
-      icon: "/images/icon/service_box_5.svg",
+      title: "Product Engineering Leadership",
+      text: "Partner with founders and teams on discovery, technical strategy, mentoring, design systems, and execution from zero to production.",
     },
   ],
 } as const;
