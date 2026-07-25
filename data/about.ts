@@ -41,15 +41,15 @@ export const counters = [
 ] as const;
 
 export const skills = {
-  eyebrow: "Core Development Skills",
-  title: "Over 12 Years of Experience Building",
-  titleAccent: "Scalable Digital Products",
-  text: "I'm a Senior Software Engineer passionate about crafting high-performance mobile and web applications. With deep experience in Flutter, SwiftUI, and React, I bring ideas to life through clean architecture, scalable APIs, and intuitive user experiences.",
+  eyebrow: "Core Agentic Engineering Skills",
+  title: "Systems Architecture for",
+  titleAccent: "AI-Native Products",
+  text: "I combine product strategy, legacy modernization, local-first AI infrastructure, and hands-on cross-platform engineering to move teams from experiments to durable production systems.",
   videoImage: "/images/about/video_shape_1.png",
   items: [
-    { title: "Flutter & Cross-Platform Development", percent: 98 },
-    { title: "iOS / Android (SwiftUI & Kotlin)", percent: 90 },
-    { title: "React & Web Development", percent: 92 },
-    { title: "Backend & API Integration", percent: 88 },
+    { title: "Multi-Agent AI Orchestration", percent: 96 },
+    { title: "Local LLM & Edge Optimization", percent: 94 },
+    { title: "Zero-Downtime Cloud Modernization", percent: 92 },
+    { title: "Mobile, Web & Product Architecture", percent: 95 },
   ],
 } as const;
