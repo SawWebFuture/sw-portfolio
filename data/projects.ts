@@ -8,24 +8,29 @@ export type Project = {
   name: string;
   stack: string;
   image: string;
+  summary: string;
   links: ProjectLink[];
 };
 
 export const projects = {
   eyebrow: "Live Projects",
-  title: "Explore My",
-  titleAccent: "Published Work",
+  title: "Published Systems,",
+  titleAccent: "Real Users",
+  intro:
+    "A concise snapshot of shipped products across AI, health, finance, community, games, and wellness — each built with practical product engineering and production constraints in mind.",
   items: [
     {
       name: "Aury AI",
-      stack: "Flutter • AI • NodeJS",
+      stack: "AI companion • Flutter • NodeJS",
       image: "/images/team/team_2_6.jpg",
+      summary: "An AI-powered support experience focused on accessible, structured conversations for wellness use cases.",
       links: [{ label: "Website", href: "https://aury.co/", variant: "dark" }],
     },
     {
       name: "Henry Meds",
-      stack: "React • Flutter • Swift",
+      stack: "Healthcare • React • Flutter",
       image: "/images/team/team_2_1.jpg",
+      summary: "A production healthcare flow connecting modern web UX, mobile delivery, and patient-facing digital operations.",
       links: [
         {
           label: "Website",
@@ -36,8 +41,9 @@ export const projects = {
     },
     {
       name: "iConnections",
-      stack: "Flutter • Finance • Mobile",
+      stack: "Finance • Events • Mobile",
       image: "/images/team/team_2_2.jpg",
+      summary: "A cross-platform finance and networking mobile app for investor events, meetings, and private market workflows.",
       links: [
         {
           label: "Apple Store",
@@ -55,6 +61,7 @@ export const projects = {
       name: "Soul Games Studios",
       stack: "Unity • Web • Mobile",
       image: "/images/team/team_2_3.jpg",
+      summary: "A game studio presence and product ecosystem spanning playful interactive experiences and web delivery.",
       links: [
         {
           label: "Website",
@@ -67,6 +74,7 @@ export const projects = {
       name: "Meditation Experience",
       stack: "Wellness • Mobile App",
       image: "/images/team/team_2_4.jpg",
+      summary: "A wellness-focused mobile app designed around calming experiences, repeat engagement, and simple access.",
       links: [
         {
           label: "Apple Store",
