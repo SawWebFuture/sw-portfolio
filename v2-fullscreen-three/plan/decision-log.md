@@ -22,6 +22,13 @@ Use this file to capture decisions before building the fullscreen Next.js + Thre
 - The site must make the hiring problem clear: normal portfolios do not prove someone can handle ambiguous AI systems, modernization, and high-stakes architecture work.
 - Success should be measured by qualified conversations and buyer understanding, not raw traffic or visual novelty alone.
 
+### 2026-07-25 — Startup simulator is the leading concept
+
+- Scott suggested a startup simulator that shows a company progressing toward IPO.
+- This is a strong framing because it connects the unique Three.js experience to the hiring audience's business concerns.
+- Plan v2 as a transformation story: idea chaos → MVP → agentic workflows → product-market fit → scale → IPO-ready system.
+- Use IPO-ready as a metaphor for maturity, reliability, trust, and compounding value; avoid fake financial claims unless real data exists.
+
 ## Pending decisions
 
 - Preview route vs replacement homepage

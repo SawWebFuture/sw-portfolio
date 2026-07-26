@@ -40,9 +40,9 @@ The v2 should feel more intentional and immersive than the current section-by-se
 
 ## Core concept
 
-**Working title:** `Systems Garden / Agentic Observatory`
+**Working title:** `Systems Garden / Agentic Observatory / Startup Simulator`
 
-A fullscreen portfolio where the visitor moves through a living AI systems environment:
+A fullscreen portfolio where the visitor moves through a living AI systems environment. The strongest current framing is a startup simulator: the visitor sees a company evolve from idea chaos to IPO-ready system as Scott's Agentic Engineering interventions create leverage.
 
 1. **Seed / Signal** — Scott as Systems Architect + Agentic Engineering lead
 2. **Swarm / Orchestration** — autonomous agents and local LLMs coordinating

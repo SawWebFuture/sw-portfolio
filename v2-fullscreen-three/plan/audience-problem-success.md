@@ -153,6 +153,14 @@ The animation should not be random decoration. It should show transformation:
 chaos → orchestration → useful system → business outcome
 ```
 
+A startup simulator may be the clearest way to make that transformation concrete:
+
+```text
+idea chaos → MVP → agentic workflows → product-market fit → scale → IPO-ready system
+```
+
+In this framing, `IPO-ready` is not a literal guarantee or financial claim. It represents maturity: reliable systems, clear operating model, durable product loops, investor/customer trust, and architecture that can scale.
+
 ### 2. Narrative structure
 
 Each screen should answer one buyer question:
