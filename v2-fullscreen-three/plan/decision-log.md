@@ -10,6 +10,12 @@ Use this file to capture decisions before building the fullscreen Next.js + Thre
 - Created `v2-fullscreen-three/plan/` for planning docs.
 - No Next.js scaffold or production code should be added until Scott explicitly says to start building.
 
+### 2026-07-25 — v2 must be meaningfully unique
+
+- Scott wants the new version to be really unique and different.
+- v2 should not feel like a normal portfolio, a generic landing page, or a cleaned-up remix of the current site.
+- Planning direction should prioritize a memorable fullscreen Three.js experience: part systems map, part living garden, part AI command surface.
+
 ## Pending decisions
 
 - Preview route vs replacement homepage

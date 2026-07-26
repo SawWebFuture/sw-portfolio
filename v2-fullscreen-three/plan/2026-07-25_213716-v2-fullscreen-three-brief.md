@@ -34,11 +34,13 @@ Recent visual patterns that worked:
 
 The v2 should feel more intentional and immersive than the current section-by-section iteration.
 
+**New creative mandate:** v2 should be really unique and different — not a polished remix of the current portfolio, not a normal landing page, and not another stack of conventional sections. It should feel like a memorable interactive artifact: part systems map, part living garden, part AI command surface, and part personal mythology for Scott's Agentic Engineering work.
+
 ---
 
 ## Core concept
 
-**Working title:** `Systems Garden`
+**Working title:** `Systems Garden / Agentic Observatory`
 
 A fullscreen portfolio where the visitor moves through a living AI systems environment:
 
