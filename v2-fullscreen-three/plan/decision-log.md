@@ -41,6 +41,12 @@ Use this file to capture decisions before building the fullscreen Next.js + Thre
 - Treat this as a staged idea: first simulate agent roles deterministically in the UI, then consider live SDK-powered interactions only after privacy, cost, abuse, and deployment constraints are decided.
 - Potential agent roles: Architecture, Product, Modernization, Workflow, Quality, and Founder/Operator agents.
 
+### 2026-07-25 — Multi-business orchestration model
+
+- Scott clarified that the simulator should allow many businesses to run in parallel.
+- The visitor is the orchestrator: they scan several businesses, assign agentic engineering interventions, solve small puzzles, and improve portfolio health.
+- This should become the central mechanic because it communicates orchestration, prioritization, and systems leadership better than a single linear startup path.
+
 ## Pending decisions
 
 - Preview route vs replacement homepage

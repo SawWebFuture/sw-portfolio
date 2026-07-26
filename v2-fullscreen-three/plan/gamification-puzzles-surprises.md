@@ -14,11 +14,13 @@ The portfolio should feel like an interactive systems game, not a passive resume
 
 The visitor is still the hiring audience, so the game mechanics should reinforce Scott's value:
 
-- clarify chaos
+- orchestrate many businesses in parallel
+- clarify chaos across a portfolio of systems
 - solve systems puzzles
+- assign specialized agents to the right business problems
 - unlock agentic workflows
-- improve company health metrics
-- progress from fragile startup to IPO-ready system
+- improve company and portfolio health metrics
+- progress from fragile startups to IPO-ready systems
 - discover proof, field notes, and contact paths as rewards
 
 The game should be delightful but not confusing. A busy founder or CTO should understand the offer even if they skip the puzzles.
@@ -28,7 +30,7 @@ The game should be delightful but not confusing. A busy founder or CTO should un
 ## Core game loop
 
 ```text
-observe the system → solve a small puzzle → unlock an intervention → watch the company improve → reveal proof/CTA
+scan parallel businesses → identify highest-leverage issue → assign agents / solve a small puzzle → watch one business improve → portfolio health changes → reveal proof/CTA
 ```
 
 Each stage of the startup simulator should include one lightweight interaction.
