@@ -19,6 +19,15 @@ const stateRank: Record<MaturityState, number> = {
 const flowSteps = startupStages.map((stage) => stage.label);
 const launchAnimationMs = 1050;
 
+const homeBenefits = [
+  { icon: "△", title: "Turn expertise into leverage", detail: "Build once. Help many." },
+  { icon: "✦", title: "Solve a measurable problem", detail: "Focus creates clarity and demand." },
+  { icon: "◌", title: "Use AI & agents to move faster", detail: "Automate work. Multiply impact." },
+  { icon: "×", title: "Create value without a huge team", detail: "Systems over headcount." },
+  { icon: "◇", title: "Build systems that can scale", detail: "Design for compounding outcomes." },
+  { icon: "▾", title: "Enter markets that once required capital", detail: "Local-first tools. Global distribution." },
+];
+
 function stateBadgeClass(state: MaturityState) {
   if (state === "Noisy") return "bg-orange-100 text-orange-700";
   if (state === "Coherent") return "bg-cyan-100 text-theme";
@@ -142,19 +151,21 @@ export function V2OrchestratorExperience() {
       )}
 
       <div className="relative z-10 flex h-dvh flex-col overflow-hidden px-4 py-4 sm:px-6 lg:px-8">
-        <nav className="flex shrink-0 items-center justify-between rounded-full bg-white/55 px-4 py-3 text-xs font-black uppercase tracking-[0.2em] text-theme shadow-sm backdrop-blur-xl">
-          <Link href="/" className="text-foreground/70 transition hover:text-foreground">
-            Scott Williams
-          </Link>
-          <div className="hidden gap-4 text-foreground/45 sm:flex">
-            <span>Soft menu</span>
-            <span>No scroll</span>
-            <span>Selective 3D</span>
-          </div>
-          <button type="button" onClick={resetExperience} className="rounded-full bg-white/70 px-3 py-1 text-[0.62rem] text-accent shadow-sm">
-            Reset
-          </button>
-        </nav>
+        {launched ? (
+          <nav className="flex shrink-0 items-center justify-between rounded-full bg-white/55 px-4 py-3 text-xs font-black uppercase tracking-[0.2em] text-theme shadow-sm backdrop-blur-xl">
+            <Link href="/" className="text-foreground/70 transition hover:text-foreground">
+              Scott Williams
+            </Link>
+            <div className="hidden gap-4 text-foreground/45 sm:flex">
+              <span>Soft menu</span>
+              <span>No scroll</span>
+              <span>Selective 3D</span>
+            </div>
+            <button type="button" onClick={resetExperience} className="rounded-full bg-white/70 px-3 py-1 text-[0.62rem] text-accent shadow-sm">
+              Reset
+            </button>
+          </nav>
+        ) : null}
 
         {launching ? (
           <div className="pointer-events-none absolute inset-0 z-30 overflow-hidden bg-[#061923]/82 backdrop-blur-sm">
@@ -177,43 +188,56 @@ export function V2OrchestratorExperience() {
         ) : null}
 
         {!launched ? (
-          <div className="grid flex-1 items-center overflow-hidden py-4 sm:py-6">
-            <div className="min-w-0 max-w-4xl space-y-4 text-left text-white">
-              <div className="max-w-3xl space-y-4">
-                <p className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[0.68rem] font-black uppercase tracking-[0.26em] text-orange-100 shadow-sm backdrop-blur-xl">
-                  Startup generator
-                </p>
-                <h1 className="font-display text-4xl font-black leading-[0.9] tracking-[-0.075em] text-white drop-shadow-[0_18px_48px_rgba(0,0,0,0.5)] sm:text-6xl lg:text-7xl">
+          <div className="grid flex-1 overflow-hidden py-0">
+            <div className="relative min-h-0 overflow-hidden rounded-[1.8rem] border border-[#d6b35d]/30 bg-[#061923]/60 shadow-[0_30px_110px_rgba(0,0,0,0.45)] ring-1 ring-white/10">
+              <div className="absolute left-3 top-3 grid size-9 place-items-center rounded-full border border-white/25 bg-[#101633]/68 text-sm font-black text-white/88 backdrop-blur-md">
+                1
+              </div>
+
+              <div className="absolute inset-y-0 left-0 w-[min(58rem,78vw)] bg-gradient-to-r from-[#04101a]/82 via-[#04101a]/56 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#02070d]/86 to-transparent" />
+
+              <div className="absolute right-4 top-1/2 hidden -translate-y-1/2 flex-col gap-3 sm:flex">
+                {["✧", "▥", "♟", "▰"].map((icon) => (
+                  <div key={icon} className="grid size-11 place-items-center rounded-full border border-white/18 bg-[#061923]/48 text-lg text-[#f5d98a] shadow-[0_0_28px_rgba(245,217,138,0.12)] backdrop-blur-md">
+                    {icon}
+                  </div>
+                ))}
+              </div>
+
+              <div className="relative z-10 flex h-full max-w-[27rem] flex-col justify-center px-7 py-6 text-left text-white sm:px-10 lg:px-12">
+                <h1 className="font-display text-[2.15rem] font-black leading-[0.98] tracking-[-0.06em] text-[#fff7db] drop-shadow-[0_16px_42px_rgba(0,0,0,0.55)] sm:text-[2.85rem] lg:text-[3.15rem]">
                   The future will be full of startups.
                 </h1>
-                <p className="max-w-2xl text-base leading-7 text-white/78 sm:text-xl sm:leading-8">
-                  AI agents, automation, and global distribution are lowering the cost of entering markets. The edge is knowing your expertise, choosing a measurable problem, and building the system that turns both into leverage.
+                <p className="mt-3 max-w-sm text-sm leading-6 text-white/78 sm:text-[0.95rem]">
+                  Technology, AI agents, and modern software have removed old barriers. Now, more people can turn knowledge into impact.
                 </p>
+
+                <div className="mt-4 space-y-2">
+                  {homeBenefits.map((benefit) => (
+                    <div key={benefit.title} className="grid grid-cols-[1.9rem_1fr] gap-2.5 text-sm">
+                      <span className="grid size-7 place-items-center rounded-full border border-[#f4c766]/35 bg-[#081b22]/68 text-[0.68rem] font-black text-[#f7d77d] shadow-[0_0_20px_rgba(244,199,102,0.16)] backdrop-blur-md">
+                        {benefit.icon}
+                      </span>
+                      <span>
+                        <span className="block font-black text-[#fff7db]">{benefit.title}</span>
+                        <span className="block text-xs leading-4 text-white/60">{benefit.detail}</span>
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-5 flex flex-col items-start gap-3">
+                  <button type="button" onClick={launchGenerator} className="inline-flex min-w-[14rem] items-center justify-center gap-3 rounded-lg border border-[#f6c96b]/60 bg-[#8f6422]/80 px-7 py-3.5 text-sm font-black text-[#fff7db] shadow-[0_0_0_1px_rgba(255,255,255,0.08)_inset,0_18px_45px_rgba(197,139,45,0.35)] backdrop-blur-md transition hover:-translate-y-1 hover:bg-[#a87628]">
+                    <span>🚀</span>
+                    Launch Startup Generator
+                  </button>
+                </div>
               </div>
 
-              <div className="grid max-w-3xl gap-2 text-sm text-white/86 sm:grid-cols-3">
-                <div className="rounded-2xl border border-white/14 bg-white/10 p-3 shadow-sm backdrop-blur-xl">
-                  <p className="font-black text-white">Turn expertise into leverage</p>
-                  <p className="mt-1.5 text-xs leading-5 text-white/66">Start from what you know, then compound it with software and agents.</p>
-                </div>
-                <div className="rounded-2xl border border-white/14 bg-white/10 p-3 shadow-sm backdrop-blur-xl">
-                  <p className="font-black text-white">Solve something measurable</p>
-                  <p className="mt-1.5 text-xs leading-5 text-white/66">Focus on time saved, risk reduced, revenue created, or quality improved.</p>
-                </div>
-                <div className="rounded-2xl border border-white/14 bg-white/10 p-3 shadow-sm backdrop-blur-xl">
-                  <p className="font-black text-white">Build without a giant team</p>
-                  <p className="mt-1.5 text-xs leading-5 text-white/66">Modern tooling lets small operators create systems that used to require capital.</p>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-3">
-                <button type="button" onClick={launchGenerator} className="inline-flex rounded-full bg-accent px-7 py-3.5 text-sm font-black uppercase tracking-[0.18em] text-white shadow-[0_18px_50px_rgba(255,129,57,0.42)] transition hover:-translate-y-1">
-                  Launch Startup Generator
-                </button>
-                <p className="max-w-md text-xs font-bold uppercase tracking-[0.18em] text-white/58">
-                  Next: identify expertise → define measurable problem → build the startup path
-                </p>
-              </div>
+              <p className="absolute inset-x-4 bottom-2 z-10 text-center text-[0.66rem] font-semibold text-white/65">
+                Find your expertise. Choose a measurable problem. Build the system.
+              </p>
             </div>
           </div>
         ) : (
