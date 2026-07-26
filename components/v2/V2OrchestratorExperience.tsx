@@ -5,6 +5,7 @@ import { useCallback, useMemo, useState } from "react";
 import { v2Agents, type AgentId } from "@/data/v2/agents";
 import { v2Businesses, type BusinessId, type MaturityState } from "@/data/v2/businesses";
 import { findIntervention } from "@/data/v2/interventions";
+import { startupStages } from "@/data/v2/stages";
 import { BusinessConstellationScene } from "./BusinessConstellationScene";
 
 const stateRank: Record<MaturityState, number> = {
@@ -15,7 +16,8 @@ const stateRank: Record<MaturityState, number> = {
   "IPO-ready": 5,
 };
 
-const flowSteps = ["Select", "Launch", "Assign", "Stabilize", "Go deeper"];
+const flowSteps = startupStages.map((stage) => stage.label);
+const launchAnimationMs = 1050;
 
 function stateBadgeClass(state: MaturityState) {
   if (state === "Noisy") return "bg-orange-100 text-orange-700";
@@ -34,6 +36,9 @@ function agentAccentClass(agentId: AgentId, active = false) {
 
 export function V2OrchestratorExperience() {
   const [launched, setLaunched] = useState(false);
+  const [launching, setLaunching] = useState(false);
+  const [stageIndex, setStageIndex] = useState(0);
+  const [transitionPulse, setTransitionPulse] = useState(0);
   const [selectedBusinessId, setSelectedBusinessId] = useState<BusinessId>("ai-startup");
   const [selectedAgentId, setSelectedAgentId] = useState<AgentId>("architecture");
   const [completed, setCompleted] = useState<Partial<Record<BusinessId, AgentId>>>({});
@@ -41,9 +46,9 @@ export function V2OrchestratorExperience() {
 
   const selectedBusiness = v2Businesses.find((business) => business.id === selectedBusinessId) ?? v2Businesses[0];
   const selectedAgent = v2Agents.find((agent) => agent.id === selectedAgentId) ?? v2Agents[0];
+  const currentStage = startupStages[stageIndex] ?? startupStages[0];
+  const earnedBadges = startupStages.slice(0, stageIndex + (launched ? 1 : 0));
   const activeIntervention = findIntervention(selectedBusiness.id, selectedAgent.id);
-  const completedAgentId = completed[selectedBusiness.id];
-  const completedIntervention = completedAgentId ? findIntervention(selectedBusiness.id, completedAgentId) : undefined;
 
   const portfolioState = useMemo<MaturityState>(() => {
     const completedCount = Object.keys(completed).length;
@@ -62,9 +67,26 @@ export function V2OrchestratorExperience() {
     if (recommendedAgentId) setSelectedAgentId(recommendedAgentId);
   }, []);
 
+  const resetExperience = () => {
+    setLaunched(false);
+    setLaunching(false);
+    setStageIndex(0);
+    setTransitionPulse((current) => current + 1);
+    setCompleted({});
+    setEventLog("Select a startup business, then launch the generator.");
+  };
+
   const launchGenerator = () => {
-    setLaunched(true);
-    setEventLog(`${selectedBusiness.name} launched. Inspect the flow, assign an agent, then watch the operating metrics change.`);
+    setLaunching(true);
+    setStageIndex(0);
+    setTransitionPulse((current) => current + 1);
+    setEventLog("Rocket ignition. Startup system coming online.");
+
+    window.setTimeout(() => {
+      setLaunching(false);
+      setLaunched(true);
+      setEventLog(`${selectedBusiness.name} launched into the Idea stage. The dashboard will guide each transition.`);
+    }, launchAnimationMs);
   };
 
   const assignAgent = () => {
@@ -86,6 +108,28 @@ export function V2OrchestratorExperience() {
     setEventLog(intervention?.event ?? "Auto-orchestration found the safest next intervention.");
   };
 
+  const goToNextStage = () => {
+    setStageIndex((current) => {
+      const next = Math.min(current + 1, startupStages.length - 1);
+      const stage = startupStages[next] ?? startupStages[0];
+      setEventLog(`${stage.dashboardTitle}: ${stage.flow}`);
+      return next;
+    });
+    setTransitionPulse((current) => current + 1);
+  };
+
+  const goToPreviousStage = () => {
+    setStageIndex((current) => {
+      const next = Math.max(current - 1, 0);
+      const stage = startupStages[next] ?? startupStages[0];
+      setEventLog(`${stage.dashboardTitle}: ${stage.flow}`);
+      return next;
+    });
+    setTransitionPulse((current) => current + 1);
+  };
+
+  const isFinalStage = stageIndex === startupStages.length - 1;
+
   return (
     <section className="fixed inset-0 z-[100] overflow-hidden bg-[#f8fbfb] text-foreground">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(19,184,207,0.16),transparent_32%),radial-gradient(circle_at_88%_10%,rgba(255,129,57,0.13),transparent_30%),linear-gradient(135deg,rgba(255,255,255,0.92),rgba(238,247,248,0.86))]" />
@@ -100,10 +144,30 @@ export function V2OrchestratorExperience() {
             <span>No scroll</span>
             <span>Selective 3D</span>
           </div>
-          <button type="button" onClick={() => setLaunched(false)} className="rounded-full bg-white/70 px-3 py-1 text-[0.62rem] text-accent shadow-sm">
+          <button type="button" onClick={resetExperience} className="rounded-full bg-white/70 px-3 py-1 text-[0.62rem] text-accent shadow-sm">
             Reset
           </button>
         </nav>
+
+        {launching ? (
+          <div className="pointer-events-none absolute inset-0 z-30 overflow-hidden bg-[#061923]/82 backdrop-blur-sm">
+            <div className="absolute left-1/2 top-[64%] h-40 w-1 -translate-x-1/2 rounded-full bg-gradient-to-t from-accent via-white to-transparent blur-sm animate-pulse" />
+            <div className="absolute left-1/2 top-[62%] -translate-x-1/2 animate-[rocketLaunch_1.05s_ease-in_forwards] text-7xl drop-shadow-[0_20px_40px_rgba(255,129,57,0.55)]">
+              🚀
+            </div>
+            <div className="absolute inset-x-6 bottom-12 rounded-[2rem] bg-white/12 p-5 text-center text-white shadow-2xl backdrop-blur-xl">
+              <p className="text-xs font-black uppercase tracking-[0.3em] text-orange-200">startup ignition</p>
+              <p className="mt-2 font-display text-3xl font-black tracking-[-0.05em]">Launching {selectedBusiness.name}</p>
+            </div>
+            <style jsx>{`
+              @keyframes rocketLaunch {
+                0% { transform: translate(-50%, 0) rotate(-12deg) scale(0.92); opacity: 0.35; }
+                22% { opacity: 1; }
+                100% { transform: translate(-50%, -78vh) rotate(8deg) scale(1.18); opacity: 0; }
+              }
+            `}</style>
+          </div>
+        ) : null}
 
         {!launched ? (
           <div className="grid flex-1 place-items-center overflow-hidden py-6">
@@ -182,11 +246,11 @@ export function V2OrchestratorExperience() {
               <div className="flex shrink-0 items-center justify-between gap-3">
                 <div>
                   <p className="text-[0.65rem] font-black uppercase tracking-[0.22em] text-accent">Dashboard interface</p>
-                  <h2 className="font-display text-2xl font-black tracking-[-0.05em] sm:text-3xl">Go deeper without scrolling</h2>
+                  <h2 className="font-display text-2xl font-black tracking-[-0.05em]">Startup dashboard</h2>
                 </div>
                 <div className="hidden items-center gap-2 sm:flex">
-                  <button type="button" onClick={assignAgent} className="rounded-full bg-foreground px-4 py-2 text-xs font-black text-white">
-                    Assign
+                  <button type="button" onClick={goToNextStage} disabled={isFinalStage} className="rounded-full bg-foreground px-4 py-2 text-xs font-black text-white disabled:opacity-45">
+                    Next Stage
                   </button>
                   <button type="button" onClick={autoOrchestrate} className="rounded-full bg-white px-4 py-2 text-xs font-black text-theme shadow-sm">
                     Auto
@@ -198,21 +262,22 @@ export function V2OrchestratorExperience() {
               </div>
 
               <div className="shrink-0 rounded-[1.2rem] bg-[#f8fbfb]/90 p-2">
-                <div className="grid grid-cols-5 gap-1 text-center text-[0.55rem] font-black uppercase tracking-[0.07em] text-muted">
+                <div className="flex gap-1 overflow-x-auto text-center text-[0.55rem] font-black uppercase tracking-[0.07em] text-muted">
                   {flowSteps.map((step, index) => (
-                    <span key={step} className={`rounded-full px-2 py-2 ${index <= Object.keys(completed).length + 1 ? "bg-white text-theme shadow-sm" : "bg-transparent"}`}>{step}</span>
+                    <span key={step} className={`min-w-fit rounded-full px-2.5 py-2 transition-all duration-500 ${index <= stageIndex ? "bg-white text-theme shadow-sm" : "bg-transparent"}`}>{step}</span>
                   ))}
                 </div>
               </div>
 
               <div className="min-h-0 flex-1 space-y-3 overflow-y-auto pr-1">
-                <div className="rounded-[1.3rem] bg-white p-3 shadow-sm">
+                <div key={`${currentStage.id}-${transitionPulse}`} className="animate-[stageIn_520ms_ease-out] rounded-[1.3rem] bg-white p-3 shadow-sm">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="text-[0.6rem] font-black uppercase tracking-[0.2em] text-muted">Selected startup</p>
-                      <h3 className="mt-1 font-display text-xl font-black sm:text-2xl">{selectedBusiness.name}</h3>
-                      <p className="mt-1 line-clamp-2 text-sm leading-6 text-muted">{selectedBusiness.stakes}</p>
+                      <p className="text-[0.6rem] font-black uppercase tracking-[0.2em] text-muted">Stage {stageIndex + 1} / {startupStages.length}</p>
+                      <h3 className="mt-1 font-display text-xl font-black sm:text-2xl">{currentStage.dashboardTitle}</h3>
+                      <p className="mt-1 text-sm leading-6 text-muted">{currentStage.prompt}</p>
                       <div className="mt-2 flex flex-wrap gap-2">
+                        <span className="rounded-full bg-cyan-100 px-2.5 py-1 text-[0.62rem] font-black text-theme">{currentStage.metric}</span>
                         {selectedBusiness.metrics.map((metric) => {
                           const improved = Boolean(completed[selectedBusiness.id]);
                           const state = improved ? metric.after : metric.before;
@@ -224,11 +289,17 @@ export function V2OrchestratorExperience() {
                         })}
                       </div>
                     </div>
-                    <span className="rounded-full bg-smoke px-3 py-1 text-xs font-black text-theme">{selectedBusiness.sector}</span>
+                    <span className="rounded-full bg-smoke px-3 py-1 text-xs font-black text-theme">{currentStage.label}</span>
                   </div>
+                  <style jsx>{`
+                    @keyframes stageIn {
+                      from { opacity: 0; transform: translateY(14px) scale(0.985); }
+                      to { opacity: 1; transform: translateY(0) scale(1); }
+                    }
+                  `}</style>
                 </div>
 
-                <div className="grid gap-2 sm:grid-cols-3">
+                <div className="hidden gap-2 sm:grid-cols-3">
                   {v2Agents.map((agent) => {
                     const active = selectedAgent.id === agent.id;
                     const recommended = selectedBusiness.recommendedAgentIds.includes(agent.id);
@@ -248,13 +319,37 @@ export function V2OrchestratorExperience() {
                   })}
                 </div>
 
+                <div className="grid gap-2 sm:grid-cols-[0.9fr_1.1fr]">
+                  <div className="rounded-[1.3rem] bg-white p-3 shadow-sm">
+                    <p className="text-[0.6rem] font-black uppercase tracking-[0.2em] text-muted">Badges earned</p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {earnedBadges.map((stage) => (
+                        <span key={stage.id} title={stage.badgeDescription} className="rounded-full bg-foreground px-3 py-1.5 text-[0.64rem] font-black text-white shadow-sm">
+                          🏅 {stage.badge}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="rounded-[1.3rem] bg-[#fff8f3] p-3 shadow-sm">
+                    <p className="text-[0.6rem] font-black uppercase tracking-[0.2em] text-accent">Examples / Scott&apos;s experience</p>
+                    <h4 className="mt-1 font-display text-lg font-black">{currentStage.exampleTitle}</h4>
+                    <p className="mt-1 line-clamp-3 text-sm leading-6 text-muted">{currentStage.exampleBody}</p>
+                  </div>
+                </div>
+
                 <div className="rounded-[1.3rem] bg-[#f8fbfb] p-3">
                   <p className="text-[0.6rem] font-black uppercase tracking-[0.2em] text-muted">Important information</p>
                   <p className="mt-1 line-clamp-2 text-sm leading-6 text-foreground">
-                    {completedIntervention?.outcome ?? activeIntervention?.outcome ?? selectedBusiness.startingProblem}
+                    {currentStage.flow} {currentStage.surprise}
                   </p>
-                  <div className="mt-3 flex gap-2">
-                    <button type="button" onClick={assignAgent} className="rounded-full bg-foreground px-5 py-3 text-sm font-black text-white transition hover:-translate-y-0.5">
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <button type="button" onClick={goToPreviousStage} disabled={stageIndex === 0} className="rounded-full bg-white px-5 py-3 text-sm font-black text-theme shadow-sm transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40">
+                      Back
+                    </button>
+                    <button type="button" onClick={goToNextStage} disabled={isFinalStage} className="rounded-full bg-foreground px-5 py-3 text-sm font-black text-white transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-45">
+                      {isFinalStage ? "IPO Reached" : "Next Stage"}
+                    </button>
+                    <button type="button" onClick={assignAgent} className="rounded-full bg-accent px-5 py-3 text-sm font-black text-white transition hover:-translate-y-0.5">
                       Assign Agent
                     </button>
                     <button type="button" onClick={autoOrchestrate} className="rounded-full bg-white px-5 py-3 text-sm font-black text-theme shadow-sm transition hover:-translate-y-0.5">
