@@ -245,10 +245,13 @@ Do not build yet. When ready, likely structure:
 
 ```text
 app/v2/page.tsx
-components/v2/StartupSimulatorScene.tsx
-components/v2/SimulatorOverlay.tsx
+components/v2/BusinessConstellationScene.tsx
+components/v2/OrchestratorPanel.tsx
+components/v2/BusinessInspector.tsx
 components/v2/SimulatorControls.tsx
-data/v2/simulatorStages.ts
+data/v2/businesses.ts
+data/v2/agents.ts
+data/v2/interventions.ts
 ```
 
 Keep semantic HTML content for each stage so the site remains readable, searchable, and accessible even if WebGL fails.

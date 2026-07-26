@@ -47,6 +47,12 @@ Use this file to capture decisions before building the fullscreen Next.js + Thre
 - The visitor is the orchestrator: they scan several businesses, assign agentic engineering interventions, solve small puzzles, and improve portfolio health.
 - This should become the central mechanic because it communicates orchestration, prioritization, and systems leadership better than a single linear startup path.
 
+### 2026-07-25 — Three.js should be selective, not everywhere
+
+- Scott is rethinking the Three.js direction and wants to use it only where needed.
+- v2 should be a hybrid product/proof artifact: semantic HTML/CSS for clarity, SEO, accessibility, proof, and conversion; Three.js only for orchestration maps, transformation moments, puzzles, and surprises.
+- Decision rule: add 3D only when it makes the hiring-relevant concept clearer, works on mobile, and the page still communicates without it.
+
 ## Pending decisions
 
 - Preview route vs replacement homepage

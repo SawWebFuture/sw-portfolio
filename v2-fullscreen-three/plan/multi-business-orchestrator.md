@@ -116,11 +116,12 @@ Example:
 
 ### Desktop
 
-- fullscreen Three.js field
-- businesses appear as planets/gardens/cells in a constellation
-- agent nodes move between businesses like couriers/orbiters
-- central command surface shows portfolio health
-- side panel explains the active business problem
+- product-like orchestration dashboard as the base UI
+- selective Three.js field for the business constellation only where it adds meaning
+- businesses appear as planets/gardens/cells in a constellation when 3D is useful
+- agent nodes move between businesses like couriers/orbiters during key interventions
+- central command surface shows portfolio health in HTML/CSS
+- side panel explains the active business problem in readable semantic content
 
 ### Mobile
 

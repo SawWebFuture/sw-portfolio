@@ -20,19 +20,19 @@ A visitor should think:
 
 ## Proposed experience model
 
-### 1. One continuous living scene
+### 1. One coherent hybrid experience
 
-Instead of separate boxed sections, use one fullscreen Three.js world that transforms as the visitor moves through states:
+Instead of separate boxed sections or WebGL everywhere, use a clear product-like experience with selective Three.js moments. Three.js should appear where it makes the orchestration/game metaphor clearer:
 
-- system cube / architecture core
+- business constellation / orchestrator map
 - agent swarm / orchestration layer
 - water flow / business fit
 - flower-of-life / autonomy
 - textured tree / quality and growth
-- project constellations / proof
-- contact portal / collaboration
+- project constellations / proof unlocks
+- contact portal / collaboration finale
 
-HTML content can appear as calm overlays, but the 3D world should be the main continuity.
+HTML content and product UI should carry the core narrative, proof, accessibility, and conversion. The 3D world should create meaning at the most important moments, not become the whole site.
 
 ### 2. Navigation as a spatial instrument
 
