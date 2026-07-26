@@ -150,7 +150,7 @@ export function V2OrchestratorExperience() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(19,184,207,0.16),transparent_32%),radial-gradient(circle_at_88%_10%,rgba(255,129,57,0.13),transparent_30%),linear-gradient(135deg,rgba(255,255,255,0.92),rgba(238,247,248,0.86))]" />
       )}
 
-      <div className="relative z-10 flex h-dvh flex-col overflow-hidden px-4 py-4 sm:px-6 lg:px-8">
+      <div className={`relative z-10 flex h-dvh flex-col overflow-hidden ${launched ? "px-4 py-4 sm:px-6 lg:px-8" : "px-0 py-0"}`}>
         {launched ? (
           <nav className="flex shrink-0 items-center justify-between rounded-full bg-white/55 px-4 py-3 text-xs font-black uppercase tracking-[0.2em] text-theme shadow-sm backdrop-blur-xl">
             <Link href="/" className="text-foreground/70 transition hover:text-foreground">
@@ -188,8 +188,8 @@ export function V2OrchestratorExperience() {
         ) : null}
 
         {!launched ? (
-          <div className="grid flex-1 overflow-hidden py-0">
-            <div className="relative min-h-0 overflow-hidden rounded-[1.8rem] border border-[#d6b35d]/30 bg-[#061923]/60 shadow-[0_30px_110px_rgba(0,0,0,0.45)] ring-1 ring-white/10">
+          <div className="grid flex-1 overflow-hidden">
+            <div className="relative min-h-0 overflow-hidden">
               <div className="absolute left-3 top-3 grid size-9 place-items-center rounded-full border border-white/25 bg-[#101633]/68 text-sm font-black text-white/88 backdrop-blur-md">
                 1
               </div>
