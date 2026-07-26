@@ -10,7 +10,7 @@ This is a strong direction because it turns the portfolio from a passive showcas
 
 ## Concept summary
 
-Build v2 around a fullscreen Three.js **startup simulator** where the visitor watches a company evolve from messy idea to investable, scalable, IPO-ready system.
+Build v2 around a fullscreen Three.js **gamified startup simulator** where the visitor does not only watch a company evolve — they solve tiny systems puzzles that move the company from messy idea to investable, scalable, IPO-ready system.
 
 The site becomes a metaphorical product/business operating system:
 
@@ -18,7 +18,7 @@ The site becomes a metaphorical product/business operating system:
 idea chaos → MVP → agentic workflows → product-market fit → scale → IPO-ready system
 ```
 
-Scott's role is shown as the systems architect who helps the company move through each stage by introducing agentic engineering, local-first AI, modernization, product architecture, and quality systems.
+Scott's role is shown as the systems architect who helps the company move through each stage by introducing agentic engineering, local-first AI, modernization, product architecture, and quality systems. The simulator can also represent specialized agents — Architecture, Product, Modernization, Workflow, Quality, and Founder/Operator — as visible helpers in the game world. Early versions should simulate these agents deterministically; a later version can evaluate whether OpenAI Agents SDK should power constrained live interactions.
 
 ---
 
