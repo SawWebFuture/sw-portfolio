@@ -16,6 +16,12 @@ Use this file to capture decisions before building the fullscreen Next.js + Thre
 - v2 should not feel like a normal portfolio, a generic landing page, or a cleaned-up remix of the current site.
 - Planning direction should prioritize a memorable fullscreen Three.js experience: part systems map, part living garden, part AI command surface.
 
+### 2026-07-25 — Audience and problem framing
+
+- Primary v2 audience: people evaluating whether to hire Scott.
+- The site must make the hiring problem clear: normal portfolios do not prove someone can handle ambiguous AI systems, modernization, and high-stakes architecture work.
+- Success should be measured by qualified conversations and buyer understanding, not raw traffic or visual novelty alone.
+
 ## Pending decisions
 
 - Preview route vs replacement homepage
