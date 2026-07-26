@@ -42,7 +42,7 @@ export function V2OrchestratorExperience() {
   const [selectedBusinessId, setSelectedBusinessId] = useState<BusinessId>("ai-startup");
   const [selectedAgentId, setSelectedAgentId] = useState<AgentId>("architecture");
   const [completed, setCompleted] = useState<Partial<Record<BusinessId, AgentId>>>({});
-  const [eventLog, setEventLog] = useState("Select a startup business, then launch the generator.");
+  const [eventLog, setEventLog] = useState("Launch the generator, then identify expertise and a measurable problem.");
 
   const selectedBusiness = v2Businesses.find((business) => business.id === selectedBusinessId) ?? v2Businesses[0];
   const selectedAgent = v2Agents.find((agent) => agent.id === selectedAgentId) ?? v2Agents[0];
@@ -73,7 +73,7 @@ export function V2OrchestratorExperience() {
     setStageIndex(0);
     setTransitionPulse((current) => current + 1);
     setCompleted({});
-    setEventLog("Select a startup business, then launch the generator.");
+    setEventLog("Launch the generator, then identify expertise and a measurable problem.");
   };
 
   const launchGenerator = () => {
@@ -85,7 +85,7 @@ export function V2OrchestratorExperience() {
     window.setTimeout(() => {
       setLaunching(false);
       setLaunched(true);
-      setEventLog(`${selectedBusiness.name} launched into the Idea stage. The dashboard will guide each transition.`);
+      setEventLog("Generator launched. Next versions will identify expertise and a measurable problem before shaping the startup system.");
     }, launchAnimationMs);
   };
 
@@ -131,8 +131,15 @@ export function V2OrchestratorExperience() {
   const isFinalStage = stageIndex === startupStages.length - 1;
 
   return (
-    <section className="fixed inset-0 z-[100] overflow-hidden bg-[#f8fbfb] text-foreground">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(19,184,207,0.16),transparent_32%),radial-gradient(circle_at_88%_10%,rgba(255,129,57,0.13),transparent_30%),linear-gradient(135deg,rgba(255,255,255,0.92),rgba(238,247,248,0.86))]" />
+    <section className="fixed inset-0 z-[100] overflow-hidden bg-[#061923] text-foreground">
+      {!launched ? (
+        <>
+          <div className="absolute inset-0 bg-[url('/images/startup-generator-future.jpg')] bg-cover bg-center" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_65%_35%,rgba(255,210,120,0.14),transparent_30%),linear-gradient(90deg,rgba(4,16,24,0.88),rgba(6,25,35,0.48)_46%,rgba(6,25,35,0.18)),linear-gradient(0deg,rgba(4,16,24,0.68),rgba(4,16,24,0.12)_48%,rgba(4,16,24,0.42))]" />
+        </>
+      ) : (
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(19,184,207,0.16),transparent_32%),radial-gradient(circle_at_88%_10%,rgba(255,129,57,0.13),transparent_30%),linear-gradient(135deg,rgba(255,255,255,0.92),rgba(238,247,248,0.86))]" />
+      )}
 
       <div className="relative z-10 flex h-dvh flex-col overflow-hidden px-4 py-4 sm:px-6 lg:px-8">
         <nav className="flex shrink-0 items-center justify-between rounded-full bg-white/55 px-4 py-3 text-xs font-black uppercase tracking-[0.2em] text-theme shadow-sm backdrop-blur-xl">
@@ -157,7 +164,7 @@ export function V2OrchestratorExperience() {
             </div>
             <div className="absolute inset-x-6 bottom-12 rounded-[2rem] bg-white/12 p-5 text-center text-white shadow-2xl backdrop-blur-xl">
               <p className="text-xs font-black uppercase tracking-[0.3em] text-orange-200">startup ignition</p>
-              <p className="mt-2 font-display text-3xl font-black tracking-[-0.05em]">Launching {selectedBusiness.name}</p>
+              <p className="mt-2 font-display text-3xl font-black tracking-[-0.05em]">Launching the generator</p>
             </div>
             <style jsx>{`
               @keyframes rocketLaunch {
@@ -170,44 +177,43 @@ export function V2OrchestratorExperience() {
         ) : null}
 
         {!launched ? (
-          <div className="grid flex-1 place-items-center overflow-hidden py-6">
-            <div className="min-w-0 w-full max-w-5xl space-y-5 text-center">
-              <div className="mx-auto max-w-3xl space-y-4">
-                <p className="text-xs font-black uppercase tracking-[0.3em] text-accent">Startup generator</p>
-                <h1 className="font-display text-4xl font-black leading-[0.9] tracking-[-0.07em] text-foreground sm:text-7xl lg:text-8xl">
-                  Pick a business. Launch the system.
+          <div className="grid flex-1 items-center overflow-hidden py-4 sm:py-6">
+            <div className="min-w-0 max-w-4xl space-y-4 text-left text-white">
+              <div className="max-w-3xl space-y-4">
+                <p className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[0.68rem] font-black uppercase tracking-[0.26em] text-orange-100 shadow-sm backdrop-blur-xl">
+                  Startup generator
+                </p>
+                <h1 className="font-display text-4xl font-black leading-[0.9] tracking-[-0.075em] text-white drop-shadow-[0_18px_48px_rgba(0,0,0,0.5)] sm:text-6xl lg:text-7xl">
+                  The future will be full of startups.
                 </h1>
-                <p className="mx-auto max-w-2xl text-base leading-7 text-muted sm:text-lg">
-                  A guided Agentic Engineering simulator. Choose the startup scenario, then enter a dashboard where flows, agents, metrics, and key decisions appear as you go deeper.
+                <p className="max-w-2xl text-base leading-7 text-white/78 sm:text-xl sm:leading-8">
+                  AI agents, automation, and global distribution are lowering the cost of entering markets. The edge is knowing your expertise, choosing a measurable problem, and building the system that turns both into leverage.
                 </p>
               </div>
 
-              <div className="min-w-0 w-full overflow-hidden">
-                <div className="flex min-w-0 w-full gap-3 overflow-x-auto pb-2 sm:grid sm:grid-cols-3 sm:overflow-visible">
-                {v2Businesses.map((business) => {
-                  const isSelected = selectedBusiness.id === business.id;
-                  return (
-                    <button
-                      key={business.id}
-                      type="button"
-                      onClick={() => handleSelectBusiness(business.id)}
-                      className={`min-w-[78vw] rounded-[1.7rem] p-5 text-left shadow-sm transition-all duration-300 sm:min-w-0 ${isSelected ? "scale-[1.02] bg-foreground text-white shadow-2xl shadow-foreground/20" : "bg-white/75 text-foreground backdrop-blur hover:-translate-y-1"}`}
-                      aria-pressed={isSelected}
-                    >
-                      <span className={`mb-4 inline-flex rounded-full px-3 py-1 text-[0.65rem] font-black uppercase tracking-[0.18em] ${isSelected ? "bg-white/15 text-white" : "bg-orange-100 text-orange-700"}`}>
-                        {isSelected ? "Selected" : "Startup"}
-                      </span>
-                      <h2 className="font-display text-xl font-black">{business.name}</h2>
-                      <p className={`mt-3 text-sm leading-6 ${isSelected ? "text-white/70" : "text-muted"}`}>{business.startingProblem}</p>
-                    </button>
-                  );
-                })}
+              <div className="grid max-w-3xl gap-2 text-sm text-white/86 sm:grid-cols-3">
+                <div className="rounded-2xl border border-white/14 bg-white/10 p-3 shadow-sm backdrop-blur-xl">
+                  <p className="font-black text-white">Turn expertise into leverage</p>
+                  <p className="mt-1.5 text-xs leading-5 text-white/66">Start from what you know, then compound it with software and agents.</p>
+                </div>
+                <div className="rounded-2xl border border-white/14 bg-white/10 p-3 shadow-sm backdrop-blur-xl">
+                  <p className="font-black text-white">Solve something measurable</p>
+                  <p className="mt-1.5 text-xs leading-5 text-white/66">Focus on time saved, risk reduced, revenue created, or quality improved.</p>
+                </div>
+                <div className="rounded-2xl border border-white/14 bg-white/10 p-3 shadow-sm backdrop-blur-xl">
+                  <p className="font-black text-white">Build without a giant team</p>
+                  <p className="mt-1.5 text-xs leading-5 text-white/66">Modern tooling lets small operators create systems that used to require capital.</p>
                 </div>
               </div>
 
-              <button type="button" onClick={launchGenerator} className="inline-flex rounded-full bg-accent px-8 py-4 text-sm font-black uppercase tracking-[0.18em] text-white shadow-[0_18px_50px_rgba(255,129,57,0.34)] transition hover:-translate-y-1">
-                Launch Startup Generator
-              </button>
+              <div className="flex flex-wrap items-center gap-3">
+                <button type="button" onClick={launchGenerator} className="inline-flex rounded-full bg-accent px-7 py-3.5 text-sm font-black uppercase tracking-[0.18em] text-white shadow-[0_18px_50px_rgba(255,129,57,0.42)] transition hover:-translate-y-1">
+                  Launch Startup Generator
+                </button>
+                <p className="max-w-md text-xs font-bold uppercase tracking-[0.18em] text-white/58">
+                  Next: identify expertise → define measurable problem → build the startup path
+                </p>
+              </div>
             </div>
           </div>
         ) : (
