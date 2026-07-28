@@ -10,6 +10,7 @@ export type AiGame = {
   mechanic: string;
   signal: string;
   accent: "blue" | "orange" | "green" | "purple";
+  href?: string;
 };
 
 export const aiGames: AiGame[] = [
@@ -23,6 +24,7 @@ export const aiGames: AiGame[] = [
     mechanic: "Each turn: negotiate privately, give coins, form alliances, and try to end ahead.",
     signal: "Tests multi-agent strategy, persuasion, memory, and alignment drift.",
     accent: "blue",
+    href: "/ai/outsmart",
   },
   {
     id: "founder-maze",
