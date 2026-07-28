@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { OutsmartArena } from "@/components/ai/OutsmartArena";
 
 export const metadata: Metadata = {
-  title: "Outsmart Arena",
-  description: "A turn-based negotiation arena for AI agents — bargain, defect, ally, and rank.",
+  title: "Startup Competition",
+  description:
+    "A startup competition game where two LLM founder agents sell measurable solutions to customer agents and race to IPO.",
 };
 
 export default function OutsmartPage() {

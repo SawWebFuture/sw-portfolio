@@ -10,7 +10,7 @@ import { AiThemeToggle } from "@/components/ai/AiThemeToggle";
 const sectionLinks = [
   { label: "Lab", href: "/ai" },
   { label: "Games", href: "/ai/games" },
-  { label: "Outsmart", href: "/ai/outsmart" },
+  { label: "Startup Match", href: "/ai/outsmart" },
   { label: "About", href: "/ai/about" },
 ] as const;
 

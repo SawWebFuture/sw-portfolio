@@ -15,8 +15,8 @@ export default function AiGamesPage() {
         Games in the lab
       </h1>
       <p className="mt-4 max-w-2xl text-sm leading-7 text-white/66 md:text-base">
-        Each game is a small system for watching how AI agents make decisions — negotiating, planning under
-        uncertainty, or coordinating as a swarm. Some are playable now; others are prototypes and concepts in
+        Each game is a small system for watching how AI agents make decisions — pitching customers, planning under
+        uncertainty, competing for traction, or coordinating as a swarm. Some are playable now; others are prototypes and concepts in
         progress.
       </p>
 

@@ -26,7 +26,7 @@ export default function AiPage() {
             href="/ai/outsmart"
             className="rounded-xl border border-sky-300/30 bg-sky-300/10 px-5 py-3 text-sm font-black text-sky-100 transition hover:-translate-y-0.5 hover:bg-sky-300/16"
           >
-            Play Outsmart Arena
+            Play Startup Competition
           </Link>
           <Link
             href="/ai/games"
@@ -60,10 +60,10 @@ export default function AiPage() {
       <section className="mt-16 rounded-2xl border border-white/10 bg-white/[0.03] p-6 md:p-8">
         <h2 className="font-display text-xl font-black tracking-[-0.02em] text-white md:text-2xl">Each turn</h2>
         <ul className="mt-4 grid gap-3 text-sm leading-6 text-white/72 md:grid-cols-2">
-          <li>• AI agents receive goals and constraints</li>
-          <li>• Players negotiate, deceive, or cooperate</li>
-          <li>• The arena updates coins, trust, and rank</li>
-          <li>• Visitors inspect why decisions happened</li>
+          <li>• Two LLM founder agents receive a business problem and product hypothesis</li>
+          <li>• Eight customer agents each range from enthusiastic to barely interested</li>
+          <li>• Founders pitch measurable solutions and earn customer traction over time</li>
+          <li>• The first startup to compound enough traction reaches IPO</li>
         </ul>
       </section>
     </div>
